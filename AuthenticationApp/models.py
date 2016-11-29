@@ -20,24 +20,35 @@ class MyUserManager(BaseUserManager):
         user = self.model(email=email)
         user.set_password(password)
 
+        #For specifying teacher,engineer
+        user_type = None
+
+        user.first_name = first_name
+        user.last_name = last_name
+
         #If first_name is not present, set it as email's username by default
         if first_name is None or first_name == "" or first_name == '':                                
             user.first_name = email[:email.find("@")]            
 
         #Classify the Users as Students, Professors, Engineers
         if is_student == True and is_professor == True and is_engineer == True:
-        	#hack to set Admin using forms
-        	user.is_admin = True
-       	elif is_student == True:
-       		user.is_student = True
-       	elif is_professor == True:
-       		user.is_professor = True
-       	elif is_engineer == True:
-       		user.is_engineer = True
-       	else:
-       		user.is_admin = True
+            #hack to set Admin using forms
+            user.is_admin = True
+        elif is_student == True:
+            user.is_student = True
+        elif is_professor == True:
+            user.is_professor = True
+        elif is_engineer == True:
+            user.is_engineer = True
+            user_type = Engineer(engID=user)
+        else:
+            user.is_admin = True
         
         user.save(using=self._db)
+
+        if user_type != None:
+            user_type.save(using=self.db)
+
         return user
 
     def create_superuser(self, email=None, password=None, first_name=None, last_name=None):
@@ -119,5 +130,13 @@ class MyUser(AbstractBaseUser):
      
 # Going to use signals to send emails
 # post_save.connect(new_user_reciever, sender=MyUser)
-             
+
+class Engineer(models.Model):
+    engID = models.ForeignKey(MyUser, null=True)
+    almamater = models.CharField(max_length=500, null=True)
+    contact = models.IntegerField(max_length=10, null=True)
+    about = models.CharField(max_length=1000, null=True)
+    # company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    company = models.CharField(max_length=50, null=True)
+
 
