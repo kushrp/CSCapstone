@@ -19,10 +19,6 @@ class MyUserManager(BaseUserManager):
         #Only the email field is required
         user = self.model(email=email)
         user.set_password(password)
-
-        #For specifying teacher,engineer
-        user_type = None
-
         user.first_name = first_name
         user.last_name = last_name
 
@@ -46,8 +42,10 @@ class MyUserManager(BaseUserManager):
         
         user.save(using=self._db)
 
-        if user_type != None:
-            user_type.save(using=self.db)
+        usr = MyUser.objects.filter(email=email)[0]
+        if is_engineer == True:
+            e = Engineer(engID=usr)
+            e.save()
 
         return user
 
@@ -134,9 +132,10 @@ class MyUser(AbstractBaseUser):
 class Engineer(models.Model):
     engID = models.ForeignKey(MyUser, null=True)
     almamater = models.CharField(max_length=500, null=True)
-    contact = models.IntegerField(max_length=10, null=True)
+    contact = models.IntegerField(null=True)
     about = models.CharField(max_length=1000, null=True)
     # company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     company = models.CharField(max_length=50, null=True)
+    pic = models.ImageField(null=True)
 
 
