@@ -8,6 +8,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db.models.signals import post_save
 
+# from UniversitiesApp.models import University
+
 # Create your models here.
 class MyUserManager(BaseUserManager):
     def create_user(self, email=None, password=None, first_name=None, last_name=None):
@@ -18,12 +20,36 @@ class MyUserManager(BaseUserManager):
         #Only the email field is required
         user = self.model(email=email)
         user.set_password(password)
+        user.first_name = first_name
+        user.last_name = last_name
 
         #If first_name is not present, set it as email's username by default
         if first_name is None or first_name == "" or first_name == '':                                
+<<<<<<< HEAD
             user.first_name = email[:email.find("@")]            
+=======
+            user.first_name = email[:email.find("@")]
+
+        #Classify the Users as Students, Professors, Engineers
+        if is_student == True and is_professor == True and is_engineer == True:
+        	#hack to set Admin using forms
+        	user.is_admin = True
+       	elif is_student == True:
+       		user.is_student = True
+       	elif is_professor == True:
+            user.is_professor = True
+       	elif is_engineer == True:
+       		user.is_engineer = True
+       	else:
+       		user.is_admin = True
+>>>>>>> kartik
         
         user.save(using=self._db)
+
+        a = MyUser.objects.filter(email=email)[0]
+        if is_professor == True:
+            t = Teacher(teacher=a)
+            t.save()
         return user
 
     def create_superuser(self, email=None, password=None, first_name=None, last_name=None):
@@ -93,6 +119,24 @@ class MyUser(AbstractBaseUser):
 # Going to use signals to send emails
 # post_save.connect(new_user_reciever, sender=MyUser)
              
+class Teacher(models.Model):
+    teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
+    university = models.ForeignKey('UniversitiesApp.University', null=True, on_delete=models.CASCADE)
+    contact = models.IntegerField(null=True)
+    department = models.CharField(max_length=200, null=True)
+    almamater = models.CharField(max_length=100, null=True)
+    pic = models.ImageField(null=True)
+
+# class Student(models.Model):
+#     major = models.CharField(max_length=500, null=True)
+#     year = models.CharField(max_length=20,null=True)
+#     skills = models.CharField(max_length=2048, null=True)
+#
+#     experience = models.CharField(max_length=2048, null=True)
+#     #conflict between char field ( comma separated list <company:time>,dynamic addition into a model(Experience model), number of years(int) )
+#
+#     resume = models.FileField(null=True)
+
 
 class Student(models.Model):
     user = models.OneToOneField(

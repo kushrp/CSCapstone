@@ -82,6 +82,7 @@ celerybeat-schedule
 
 # virtualenv
 venv/
+kbravoENV/
 ENV/
 
 # Spyder project settings
@@ -101,7 +102,12 @@ db.sqlite3
 .jpg
 
 bin/
+<<<<<<< HEAD
 =======
 *.png
 *.jpg
 >>>>>>> CSCapstone/master
+=======
+
+.idea
+>>>>>>> kartik
