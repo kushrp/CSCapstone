@@ -12,7 +12,8 @@ from django.db.models.signals import post_save
 
 # Create your models here.
 class MyUserManager(BaseUserManager):
-    def create_user(self, email=None, password=None, first_name=None, last_name=None):
+    def create_user(self, email=None, password=None, first_name=None, last_name=None,
+    		is_student=None, is_professor=None, is_engineer=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -24,10 +25,7 @@ class MyUserManager(BaseUserManager):
         user.last_name = last_name
 
         #If first_name is not present, set it as email's username by default
-        if first_name is None or first_name == "" or first_name == '':                                
-<<<<<<< HEAD
-            user.first_name = email[:email.find("@")]            
-=======
+        if first_name is None or first_name == "" or first_name == '':
             user.first_name = email[:email.find("@")]
 
         #Classify the Users as Students, Professors, Engineers
@@ -42,7 +40,7 @@ class MyUserManager(BaseUserManager):
        		user.is_engineer = True
        	else:
        		user.is_admin = True
->>>>>>> kartik
+
         
         user.save(using=self._db)
 
