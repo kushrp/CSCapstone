@@ -30,6 +30,7 @@ class MyUserManager(BaseUserManager):
 
         #Classify the Users as Students, Professors, Engineers
         if is_student == True and is_professor == True and is_engineer == True:
+<<<<<<< HEAD
         	#hack to set Admin using forms
         	user.is_admin = True
        	elif is_student == True:
@@ -48,6 +49,27 @@ class MyUserManager(BaseUserManager):
         if is_professor == True:
             t = Teacher(teacher=a)
             t.save()
+=======
+            #hack to set Admin using forms
+            user.is_admin = True
+        elif is_student == True:
+            user.is_student = True
+        elif is_professor == True:
+            user.is_professor = True
+        elif is_engineer == True:
+            user.is_engineer = True
+            user_type = Engineer(engID=user)
+        else:
+            user.is_admin = True
+        
+        user.save(using=self._db)
+
+        usr = MyUser.objects.filter(email=email)[0]
+        if is_engineer == True:
+            e = Engineer(engID=usr)
+            e.save()
+
+>>>>>>> aditya
         return user
 
     def create_superuser(self, email=None, password=None, first_name=None, last_name=None):
@@ -116,6 +138,7 @@ class MyUser(AbstractBaseUser):
      
 # Going to use signals to send emails
 # post_save.connect(new_user_reciever, sender=MyUser)
+<<<<<<< HEAD
              
 class Teacher(models.Model):
     teacher = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True)
@@ -150,6 +173,18 @@ class Student(models.Model):
 
     def __str__(self):              #Python 3
         return self.user.email
+=======
+
+class Engineer(models.Model):
+    engID = models.ForeignKey(MyUser, null=True)
+    almamater = models.CharField(max_length=500, null=True)
+    contact = models.IntegerField(null=True)
+    about = models.CharField(max_length=1000, null=True)
+    company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
+    company = models.CharField(max_length=50, null=True)
+    pic = models.ImageField(null=True)
+
+>>>>>>> aditya
 
     def __unicode__(self):           # Python 2
         return self.user.email
