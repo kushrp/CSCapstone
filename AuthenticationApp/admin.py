@@ -7,11 +7,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-<<<<<<< HEAD
-from .models import MyUser, Student
-=======
-from .models import MyUser, Teacher
->>>>>>> kartik
+from .models import MyUser, Teacher, Student
 from .forms import AdminUserCreationForm, UserChangeForm
 
 class UserAdmin(BaseUserAdmin):
