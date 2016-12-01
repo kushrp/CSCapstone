@@ -134,7 +134,7 @@ class Engineer(models.Model):
     almamater = models.CharField(max_length=500, null=True)
     contact = models.IntegerField(null=True)
     about = models.CharField(max_length=1000, null=True)
-    # company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
     company = models.CharField(max_length=50, null=True)
     pic = models.ImageField(null=True)
 
