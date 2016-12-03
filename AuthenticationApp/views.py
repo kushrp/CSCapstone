@@ -79,9 +79,6 @@ def auth_register(request):
       new_teacher = Teacher(teacher=new_user)
       new_teacher.save()
 
-    # Also registering students
-    # new_student = Student(user = new_user)
-    # new_student.save()
     login(request, new_user);
     messages.success(request, 'Success! Your account was created.')
     return render(request, 'index.html')
