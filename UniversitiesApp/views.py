@@ -4,7 +4,8 @@ UniversitiesApp Views
 Created by Jacob Dunbar on 11/5/2016.
 """
 from django.shortcuts import render
-
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from . import models
 from . import forms
 
@@ -117,12 +118,17 @@ def getCourse(request):
 def courseForm(request):
   if request.user.is_authenticated():
     in_university_name = request.GET.get('name', 'None')
-    in_university = models.University.objects.get(name__exact=in_university_name)
-    context = {
-      'university': in_university,
-    }
-    return render(request, 'courseform.html', context)
-    # render error page if user is not logged in
+    if in_university_name == 'None':
+      messages.warning(request, 'Please update your profile.')
+      return HttpResponseRedirect('/home')
+    else:
+      print("Came Here as well")
+      in_university = models.University.objects.get(name__exact=in_university_name)
+      context = {
+        'university': in_university
+      }
+      return render(request, 'courseform.html', context)
+      # render error page if user is not logged in
   return render(request, 'autherror.html')
 
 
@@ -133,13 +139,16 @@ def addCourse(request):
       if form.is_valid():
         in_university_name = request.GET.get('name', 'None')
         in_university = models.University.objects.get(name__exact=in_university_name)
+        in_teacher = models.Teacher.objects.get(teacher=request.user)
         if in_university.course_set.filter(tag__exact=form.cleaned_data['tag']).exists():
           return render(request, 'courseform.html',
                         {'error': 'Error: That course tag already exists at this university!'})
         new_course = models.Course(tag=form.cleaned_data['tag'],
                                    name=form.cleaned_data['name'],
                                    description=form.cleaned_data['description'],
-                                   university=in_university)
+                                   university=in_university,
+                                   teacher=in_teacher
+                                   )
         new_course.save()
         in_university.course_set.add(new_course)
         is_member = in_university.members.filter(email__exact=request.user.email)
@@ -153,7 +162,7 @@ def addCourse(request):
     else:
       form = forms.CourseForm()
       return render(request, 'courseform.html')
-    # render error page if user is not logged in
+      # render error page if user is not logged in
   return render(request, 'autherror.html')
 
 
@@ -209,4 +218,16 @@ def unjoinCourse(request):
       'userInCourse': False,
     }
     return render(request, 'course.html', context)
+  return render(request, 'autherror.html')
+
+def getTeachersCourses(request):
+  if request.user.is_authenticated():
+    in_teacher = models.Teacher.objects.get(teacher=request.user)
+    courses = models.Course.objects.filter(teacher=in_teacher)
+
+    context = {
+      'courses': courses,
+      'teacher': request.user,
+    }
+    return render(request, 'course_list.html' , context)
   return render(request, 'autherror.html')

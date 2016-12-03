@@ -1,0 +1,36 @@
+{% extends "body.html" %}
+
+{% block content %}
+	<!-- Content -->
+    <div class="container theme-showcase" role="main">
+		<div class="jumbotron">
+			<h2>Prof. {{ teacher.first_name }}'s courses</h2>
+{#			<p>{{ course.description }}</p>#}
+{#            {% if userInCourse %}#}
+{#            <a href="/university/course/unjoin?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Unjoin this Course</a>#}
+{#            {% else %}#}
+{#            <a href="/university/course/join?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Join this Course</a>#}
+{#            {% endif %}#}
+{#			<a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>#}
+		</div>
+    </div>
+    <div class="container" role="main">
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th>Courses</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in courses %}
+					<tr>
+						<td>{{ item.tag }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+{% endblock %}

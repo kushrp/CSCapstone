@@ -81,7 +81,7 @@ def auth_register(request):
 
     login(request, new_user);
     messages.success(request, 'Success! Your account was created.')
-    return render(request, 'index.html')
+    return HttpResponseRedirect("/home")
 
   context = {
     "form": form,
