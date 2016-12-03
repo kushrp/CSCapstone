@@ -7,3 +7,4 @@ class TeacherForm(forms.Form):
     department = forms.CharField(label='Department',widget=forms.TextInput, required=True)
     almamater = forms.CharField(label="Alma Mater", widget=forms.TextInput, required=True)
     contact = forms.IntegerField(label='Phone', widget=forms.NumberInput, required=True)
+

@@ -24,14 +24,17 @@ def getForm(request):
 	return render(request, 'form.html')
 
 def getHome(request):
-	if request.user.is_professor == True:
-		type = "Teacher"
-		a = Teacher.objects.filter(teacher=request.user)[0]
+    a = None
+    type = None
+    print(request.user)
+    if request.user.is_professor == True:
+        type = "Teacher"
+        a = Teacher.objects.filter(teacher=request.user)[0]
 
-	return render(request, 'home.html',{
-		'profile': a,
-		'user': request.user,
-		'type': type
+    return render(request, 'home.html',{
+        'profile': a,
+        'user': request.user,
+        'type': type
     })
 
 def profile_edit(request):
