@@ -13,15 +13,17 @@ from .forms import TeacherForm
 from AuthenticationApp.models import Teacher
 
 def getIndex(request):
-	return render(request, 'index.html', {
+  if request.user.is_authenticated:
+    return HttpResponseRedirect("/home")
+  return render(request, 'index.html', {
         'foo': 'bar',
     })
 
 def getTable(request):
-	return render(request, 'table.html')
+  return render(request, 'table.html')
 
 def getForm(request):
-	return render(request, 'form.html')
+  return render(request, 'form.html')
 
 def getHome(request):
     a = None
