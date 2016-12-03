@@ -5,7 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+*/migrations/*.*
+.idea
 .DS_Store
 
 # Distribution / packaging
