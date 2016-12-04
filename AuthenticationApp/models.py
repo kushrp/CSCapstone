@@ -139,25 +139,17 @@ class Teacher(models.Model):
   almamater = models.CharField(max_length=100, null=True)
   pic = models.ImageField(null=True)
 
-
-# class Student(models.Model):
-#
-#     year = models.CharField(max_length=20,null=True)
-#
-#
-#     experience = models.CharField(max_length=2048, null=True)
-#     #conflict between char field ( comma separated list <company:time>,dynamic addition into a model(Experience model), number of years(int) )
-#
-#     resume = models.FileField(null=True)
-
-
 class Student(models.Model):
   user = models.OneToOneField(
     MyUser,
     on_delete=models.CASCADE,
     primary_key=True)
+  university = models.ForeignKey('UniversitiesApp.University', null=True, on_delete=models.CASCADE)
   major = models.CharField(max_length=500, null=True)
   skills = models.CharField(max_length=2048, null=True)
+  experience = models.IntegerField(null=True)
+  resume = models.FileField(null=True)
+  year = models.CharField(max_length=20, null=True)
 
   def get_full_name(self):
     return "%s %s" % (self.user.first_name, self.user.last_name)
