@@ -70,6 +70,7 @@ def auth_register(request):
                                           last_name=form.cleaned_data['lastname'], is_student=is_student,
                                           is_professor=is_prof, is_engineer=is_engine)
     new_user.save()
+
     if is_student:
       new_student = Student(user=new_user)
       new_student.save()

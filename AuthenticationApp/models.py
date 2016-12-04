@@ -151,6 +151,7 @@ class Student(models.Model):
   resume = models.FileField(null=True)
   year = models.CharField(max_length=20, null=True)
 
+
   def get_full_name(self):
     return "%s %s" % (self.user.first_name, self.user.last_name)
 
@@ -158,7 +159,7 @@ class Student(models.Model):
     return self.user.first_name
 
   def __str__(self):  # Python 3
-    return self.user.email
+    return self.user.email + ", " + self.skills
 
   def __unicode__(self):  # Python 2
     return self.user.email
@@ -175,7 +176,7 @@ class Student(models.Model):
 
 
 
-class Engineer(models.Model):
+class Engineers(models.Model):
     engID = models.ForeignKey(MyUser, null=True)
     almamater = models.CharField(max_length=500, null=True)
     contact = models.IntegerField(null=True)

@@ -36,7 +36,7 @@ def getUniversity(request):
 
 
 def getUniversityForm(request):
-  print("URL1:" + request.GET.get("redirect"))
+  # print("URL1:" + request.GET.get("redirect"))
   if request.user.is_authenticated():
     context = {"redirect" : str(request.GET.get("redirect"))}
     return render(request, 'universityform.html', context)
@@ -45,7 +45,7 @@ def getUniversityForm(request):
 
 
 def getUniversityFormSuccess(request):
-  print("URL2 :" + request.GET.get("redirect"))
+  # print("URL2 :" + request.GET.get("redirect"))
   if request.user.is_authenticated():
     if request.method == 'POST':
       form = forms.UniversityForm(request.POST, request.FILES)
