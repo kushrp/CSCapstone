@@ -23,3 +23,10 @@ class CoursesForm(forms.Form):
     tag = forms.CharField(label='Tag', widget=forms.TextInput, required=True)
     name = forms.CharField(label='Course Name', widget=forms.TextInput, required=True)
     description = forms.CharField(label='Description', widget=forms.TextInput, required=True)
+
+class StudentForm(forms.Form):
+    major = forms.CharField(label='Major', widget=forms.TextInput, required=True)
+    skills = forms.CharField(label='Skills (comma separated list)', widget=forms.TextInput, required=True)
+    resume = forms.FileField(label='Resume', widget=forms.FileInput, required=True)
+    experience = forms.IntegerField(label='Experience', widget=forms.NumberInput)
+    year = forms.IntegerField(label='Year', widget=forms.NumberInput)
