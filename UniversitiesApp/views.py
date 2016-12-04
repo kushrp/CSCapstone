@@ -36,6 +36,7 @@ def getUniversity(request):
 
 
 def getUniversityForm(request):
+  print("URL1:" + request.GET.get("redirect"))
   if request.user.is_authenticated():
     return render(request, 'universityform.html')
   # render error page if user is not logged in
@@ -43,6 +44,7 @@ def getUniversityForm(request):
 
 
 def getUniversityFormSuccess(request):
+  print("URL2 :" + request.GET.get("redirect"))
   if request.user.is_authenticated():
     if request.method == 'POST':
       form = forms.UniversityForm(request.POST, request.FILES)
