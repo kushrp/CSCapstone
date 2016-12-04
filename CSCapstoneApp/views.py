@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib import messages
-
+from UniversitiesApp import models
 
 from .forms import TeacherForm
 
@@ -54,7 +54,8 @@ def profile_edit(request):
 
     if form.is_valid():
         if current_user.is_professor == True:
-            university = form.cleaned_data['university']
+            university_id = form.cleaned_data['university']
+            university = models.University.objects.get(id=university_id)
             department = form.cleaned_data['department']
             contact = form.cleaned_data['contact']
             almamater = form.cleaned_data['almamater']
@@ -78,5 +79,6 @@ def profile_edit(request):
         "page_name": "Update Your Profile Info",
         "button_value": "Update",
         "links": ["Home"],
+        "user": current_user,
     }
     return render(request, 'update.html', context)
