@@ -13,7 +13,6 @@ urlpatterns = [
   url(r'^university/formsuccess$', views.getUniversityFormSuccess, name='UniversityFormSuccess'),
   url(r'^university/join$', views.joinUniversity, name='JoinUniversity'),
   url(r'^university/unjoin$', views.unjoinUniversity, name='UnjoinUniversity'),
-
   url(r'^university/course/form$', views.courseForm, name="CourseForm"),
   url(r'^university/course/add$', views.addCourse, name="AddCourse"),
   url(r'^university/course/remove$', views.removeCourse, name="RemoveCourse"),

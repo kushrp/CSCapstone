@@ -8,9 +8,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from UniversitiesApp import models
 
-from .forms import TeacherForm
+from .forms import TeacherForm, StudentForm
 
-from AuthenticationApp.models import Teacher
+from AuthenticationApp.models import Teacher, Student
 
 def getIndex(request):
   if request.user.is_authenticated:
@@ -32,6 +32,9 @@ def getHome(request):
     if request.user.is_professor == True:
         type = "Teacher"
         a = Teacher.objects.filter(teacher=request.user)[0]
+    elif request.user.is_student == True:
+        type = "Student"
+        a = Student.objects.filter(user=request.user)[0]
 
     return render(request, 'home.html',{
         'profile': a,
@@ -44,9 +47,8 @@ def profile_edit(request):
 
     if current_user.is_professor == True:
         form = TeacherForm(request.POST or None)
-    #elif
-        #TODO
-
+    elif current_user.is_student == True:
+        form = StudentForm(request.POST or None)
 
     next_url = request.GET.get('next')
     if next_url is None:
@@ -67,6 +69,19 @@ def profile_edit(request):
             t.pic = image
             t.almamater = almamater
             t.save()
+        elif current_user.is_student == True:
+            major = form.cleaned_data['major']
+            skills = form.cleaned_data['skills']
+            resume = form.data['resume']
+            experience = form.data['experience']
+            year = form.data['year']
+            s = Student.objects.filter(user=request.user)[0]
+            s.major = major
+            s.skills = skills
+            s.resume = resume
+            s.experience = experience
+            s.year = year
+            s.save()
 
         if current_user is not None:
             messages.success(request, 'Success! Updated')
