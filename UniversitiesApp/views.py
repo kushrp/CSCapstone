@@ -38,7 +38,8 @@ def getUniversity(request):
 def getUniversityForm(request):
   print("URL1:" + request.GET.get("redirect"))
   if request.user.is_authenticated():
-    return render(request, 'universityform.html')
+    context = {"redirect" : str(request.GET.get("redirect"))}
+    return render(request, 'universityform.html', context)
   # render error page if user is not logged in
   return render(request, 'autherror.html')
 
@@ -58,6 +59,7 @@ def getUniversityFormSuccess(request):
         new_university.save()
         context = {
           'name': form.cleaned_data['name'],
+          'redirect': str(request.GET.get("redirect")),
         }
         return render(request, 'universityformsuccess.html', context)
       else:

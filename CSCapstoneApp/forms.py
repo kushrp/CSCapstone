@@ -6,6 +6,7 @@ class TeacherForm(forms.Form):
     image = forms.ImageField(label='Pic', widget=forms.FileInput, required=False)
 
     universities_list = models.University.objects.all()
+    print(universities_list)
     uni = []
     for univ in universities_list:
         list_uni = []
