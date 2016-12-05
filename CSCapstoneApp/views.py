@@ -36,6 +36,9 @@ def getHome(request):
       elif request.user.is_student == True:
           type = "Student"
           a = Student.objects.get(user_id=request.user)
+      elif request.user.is_engineer == True:
+        type = "Engineer"
+        a = Engineer.objects.get(engID=request.user)
 
       return render(request, 'home.html',{
           'profile': a,
@@ -53,7 +56,7 @@ def getHome(request):
         a = Student.objects.get(user_id=request.user)
       elif request.user.is_engineer == True:
         type = "Engineer"
-        a = Engineer.objects.get(engID_id=request.user)
+        a = Engineer.objects.get(engID=request.user)
 
       return render(request, 'home.html', {
         'profile': a,

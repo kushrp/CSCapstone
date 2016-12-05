@@ -19,6 +19,11 @@
                     <a class="btn btn-sm btn-default" style="float: right" href="/group/form">Create Group</a>
                     <a class="btn btn-sm btn-default" style="float: right" href="/group/query?owner={{ user.id }}">Show My Groups</a>
                     <a class="btn btn-sm btn-default" style="float: right" href="/group/all">Show All Groups</a>
+                {% elif user.is_engineer %}
+                    <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="">Create Project</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="">Show My Projects</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="">Show All Projects</a>
                 {% endif %}
             {% else %}
                 <p><b>{{ user.first_name }}</b> <b>{{ user.last_name }}</b></p>
@@ -39,6 +44,12 @@
                 <p><b>Major:</b> {{ profile.major }}</p>
                 <p><b>Email:</b> {{ user.email }}</p>
                 <p><b>Experience:</b>{{ profile.experience }}</p>
+            {% elif user.is_engineer %}
+                <p><b>Bio:</b> {{ profile.bio }}</p>
+                <p><b>Almamater:</b> {{ profile.almamater }}</p>
+                <p><b>Contact:</b> {{ profile.contact }}</p>
+                <p><b>Email:</b> {{ user.email }}</p>
+                <p><b>Company:</b>{{ profile.company_id }}</p>
             {% endif %}
         </div>
     </div>
