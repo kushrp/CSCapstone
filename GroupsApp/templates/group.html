@@ -8,11 +8,17 @@
 			<h1>{{ group.name }}</h1>
 			<p>{{ group.description }}</p>
 			{% if userIsMember %}
-			<a href="/group/unjoin?name={{ group.name }}" class="btn btn-default">Unjoin this Group</a>
+			    <a href="/group/unjoin?name={{ group.name }}" class="btn btn-default">Unjoin this Group</a>
+                <div class="panel panel-default" style="float: right">
+                    <form method="post" action="/group/add?id={{ group.id }}" class="panel-body validate"> {% csrf_token %}
+                        {{ member_form.as_p }}
+                        <button type="submit" class='btn btn-primary'>Add Member</button>
+                    </form>
+                </div>
 			{% else %}
 			<a href="/group/join?name={{ group.name }}" class="btn btn-default">Join this Group</a>
 			{% endif %}
-		</div>
+
 	</div>
 	
 	<div class="container">
@@ -26,7 +32,7 @@
 				<tbody>
 					{% for item in group.members.all %}
 					<tr>
-						<td>{{ item.get_full_name }}</td>
+						<td><a href="/home?id={{ item.id }}">{{ item.get_full_name }}</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

@@ -7,15 +7,21 @@
         <p style="font-family: 'Courier New'; font-size: x-small;"><b>Account type:</b> <u>{{ type }}</u></p>
 		<div class="jumbotron">
 			<h1 style="text-align: center"><img class="img-circle" src="{{ profile.photo }}"></h1>
-			<p>Welcome <b>{{ user.first_name }}</b>, to the CS390-Python CS Capstone Project!</p>
-            {% if user.is_professor %}
-              <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
-              <a class="btn btn-sm btn-default" style="float: right" href="/university/course/form?name={{ profile.university }}">Create Course</a>
-              <a class="btn btn-sm btn-default" style="float: right" href="/university/courses/teacher">Show My Courses</a>
-            {% elif user.is_student %}
-                <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
-                <a class="btn btn-sm btn-default" style="float: right">Create Group</a>
-              <a class="btn btn-sm btn-default" style="float: right">Show My Groups</a>
+
+            {% if request_user == None %}
+                <p>Welcome <b>{{ user.first_name }}</b>, to the CS390-Python CS Capstone Project!</p>
+                {% if user.is_professor %}
+                  <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
+                  <a class="btn btn-sm btn-default" style="float: right" href="/university/course/form?name={{ profile.university }}">Create Course</a>
+                  <a class="btn btn-sm btn-default" style="float: right" href="/university/courses/teacher">Show My Courses</a>
+                {% elif user.is_student %}
+                    <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="/group/form">Create Group</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="/group/query?owner={{ user.id }}">Show My Groups</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="/group/all">Show All Groups</a>
+                {% endif %}
+            {% else %}
+                <p><b>{{ user.first_name }}</b> <b>{{ user.last_name }}</b></p>
             {% endif %}
 
 		</div>

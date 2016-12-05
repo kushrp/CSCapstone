@@ -7,3 +7,6 @@ from django import forms
 class GroupForm(forms.Form):
     name = forms.CharField(label='Name', max_length=30)
     description = forms.CharField(label='Description', max_length=300)
+
+class MemberForm(forms.Form):
+    email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)

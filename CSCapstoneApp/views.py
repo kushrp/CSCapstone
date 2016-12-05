@@ -28,21 +28,39 @@ def getForm(request):
 def getHome(request):
     a = None
     type = None
-    if request.user.is_professor == True:
+    profiler_id = request.GET.get('id', 'None')
+    if profiler_id == 'None':
+      if request.user.is_professor == True:
+          type = "Teacher"
+          a = Teacher.objects.filter(teacher=request.user)[0]
+      elif request.user.is_student == True:
+          type = "Student"
+          a = Student.objects.get(user_id=request.user)
+
+      return render(request, 'home.html',{
+          'profile': a,
+          'user': request.user,
+          'type': type,
+          'request_user': None,
+      })
+    else:
+      myuser = models.MyUser.objects.get(id=profiler_id)
+      if request.user.is_professor == True:
         type = "Teacher"
-        a = Teacher.objects.filter(teacher=request.user)[0]
-    elif request.user.is_student == True:
+        a = Teacher.objects.filter(teacher=myuser)[0]
+      elif request.user.is_student == True:
         type = "Student"
         a = Student.objects.get(user_id=request.user)
-    elif request.user.is_engineer == True:
+      elif request.user.is_engineer == True:
         type = "Engineer"
         a = Engineer.objects.get(engID_id=request.user)
 
-    return render(request, 'home.html',{
+      return render(request, 'home.html', {
         'profile': a,
-        'user': request.user,
-        'type': type
-    })
+        'user': myuser,
+        'type': type,
+        'request_user': request.user,
+      })
 
 def profile_edit(request):
     current_user = request.user
