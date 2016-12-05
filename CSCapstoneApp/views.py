@@ -28,7 +28,6 @@ def getForm(request):
 def getHome(request):
     a = None
     type = None
-    print(request.user)
     if request.user.is_professor == True:
         type = "Teacher"
         a = Teacher.objects.filter(teacher=request.user)[0]
@@ -45,17 +44,18 @@ def getHome(request):
 def profile_edit(request):
     current_user = request.user
     form = None
+
     if current_user.is_professor:
         form = TeacherForm(request.POST or None)
+        print("The form is valid:  " + str(form.is_valid()))
         if form.is_valid():
-          university_id = form.data['university']
-          print(university_id)
-          university = models.University.objects.get(id=university_id.id)
-
+          print(form.cleaned_data['university'])
+          university_id = form.cleaned_data['university']
+          university = models.University.objects.get(id=university_id)
           department = form.cleaned_data['department']
           contact = form.cleaned_data['contact']
           almamater = form.cleaned_data['almamater']
-          pic = form.data['pic']
+          pic = request.FILES['photo']
 
           t = Teacher.objects.get(teacher=request.user)
           t.university = university
@@ -75,16 +75,18 @@ def profile_edit(request):
         form = StudentForm(request.POST or None)
         if form.is_valid():
           university_id = form.data['university']
-          university = models.University.objects.get(id=university_id.id)
+          university = models.University.objects.get(id=university_id)
           major = form.cleaned_data['major']
           skills = form.cleaned_data['skills']
           resume = form.data['resume']
           experience = form.cleaned_data['experience']
           year = form.cleaned_data['year']
+          pic = request.FILES['photo']
           s = Student.objects.get(user=request.user)
           s.major = major
           s.skills = skills
           s.resume = resume
+          s.pic = pic
           s.experience = experience
           s.university = university
           s.year = year

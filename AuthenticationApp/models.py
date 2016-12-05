@@ -137,7 +137,7 @@ class Teacher(models.Model):
   contact = models.IntegerField(null=True)
   department = models.CharField(max_length=200, null=True)
   almamater = models.CharField(max_length=100, null=True)
-  pic = models.ImageField(null=True)
+  photo = models.ImageField(upload_to="static/teacherimages", default=0)
 
 class Student(models.Model):
   user = models.OneToOneField(
@@ -150,7 +150,7 @@ class Student(models.Model):
   experience = models.IntegerField(null=True)
   resume = models.FileField(null=True)
   year = models.CharField(max_length=20, null=True)
-
+  photo = models.ImageField(upload_to="static/studentimages", default=0)
 
   def get_full_name(self):
     return "%s %s" % (self.user.first_name, self.user.last_name)
@@ -183,4 +183,4 @@ class Engineers(models.Model):
     about = models.CharField(max_length=1000, null=True)
     company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
     company = models.CharField(max_length=50, null=True)
-    pic = models.ImageField(null=True)
+    photo = models.ImageField(upload_to="static/engineerimages", default=0)

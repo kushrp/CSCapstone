@@ -5,13 +5,15 @@
 {% block content %}
 
 <div class="container" role="main">
+    {{ form.errors }}
+    {{ form.non_field_errors }}
 	<div class="panel panel-default">
-		<form method="POST" action="/update_profile" class="panel-body validate"> {% csrf_token %}
+		<form method="POST" enctype="multipart/form-data" class="panel-body validate"> {% csrf_token %}
 			{{ form.as_p }}
 			<input type="submit" class='btn btn-primary' value="{{ button_value }}">
         </form>
         {% if user.is_professor or user.is_student %}
-            <a href="/university/form?redirect=update_profile"><input type="button" class='btn btn-primary' value="Add University"></a>
+            <p></p><a href="/university/form?redirect=update_profile"><input type="button" class='btn btn-primary' value="Add University"></a></p>
         {% endif %}
 	</div>
 </div>
