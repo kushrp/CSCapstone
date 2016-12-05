@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django import forms
 from UniversitiesApp.models import University
+from CompaniesApp.models import Company
 
 class TeacherForm(forms.Form):
     photo = forms.ImageField(label='Pic', required=False)
@@ -28,3 +29,14 @@ class StudentForm(forms.Form):
       super(StudentForm, self).__init__(*args, **kwargs)
       self.fields['university'] = forms.ChoiceField(label="University", widget=forms.Select(),
                                    choices=tuple((u.id, u.name) for u in University.objects.all()), required=True)
+
+class EngineerForm(forms.Form):
+    company = forms.ChoiceField(label="Company", widget=forms.Select(),
+                                   choices=tuple((c.id, c.name) for c in Company.objects.all()), required=True)
+    resume = forms.FileField(label='Resume', widget=forms.FileInput, required=False)
+    experience = forms.IntegerField(label='Experience', widget=forms.NumberInput)
+    photo = forms.ImageField(label='Pic', required=False)
+    def __init__(self, *args, **kwargs):
+      super(EngineerForm, self).__init__(*args, **kwargs)
+      self.fields['company'] = forms.ChoiceField(label="Company", widget=forms.Select(),
+                                   choices=tuple((c.id, c.name) for c in Company.objects.all()), required=True)

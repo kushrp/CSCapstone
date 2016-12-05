@@ -8,9 +8,9 @@ from django.shortcuts import render
 from django.contrib import messages
 from UniversitiesApp import models
 
-from .forms import TeacherForm, StudentForm
+from .forms import TeacherForm, StudentForm, EngineerForm
 
-from AuthenticationApp.models import Teacher, Student
+from AuthenticationApp.models import Teacher, Student, Engineer
 
 def getIndex(request):
   if request.user.is_authenticated:
@@ -34,6 +34,9 @@ def getHome(request):
     elif request.user.is_student == True:
         type = "Student"
         a = Student.objects.get(user_id=request.user)
+    elif request.user.is_engineer == True:
+        type = "Engineer"
+        a = Engineer.objects.get(engID_id=request.user)
 
     return render(request, 'home.html',{
         'profile': a,
@@ -55,13 +58,13 @@ def profile_edit(request):
           department = form.cleaned_data['department']
           contact = form.cleaned_data['contact']
           almamater = form.cleaned_data['almamater']
-          pic = request.FILES['photo']
+          # pic = request.FILES['photo']
 
           t = Teacher.objects.get(teacher=request.user)
           t.university = university
           t.department = department
           t.contact = contact
-          t.pic = pic
+          # t.pic = pic
           t.almamater = almamater
           t.save()
           messages.success(request, 'Success, your profile was saved!')
@@ -81,12 +84,12 @@ def profile_edit(request):
           resume = form.data['resume']
           experience = form.cleaned_data['experience']
           year = form.cleaned_data['year']
-          pic = request.FILES['photo']
+          # pic = request.FILES['photo']
           s = Student.objects.get(user=request.user)
           s.major = major
           s.skills = skills
           s.resume = resume
-          s.pic = pic
+          # s.pic = pic
           s.experience = experience
           s.university = university
           s.year = year
@@ -98,6 +101,10 @@ def profile_edit(request):
             'user': request.user,
             'type': 'Student',
           })
+    elif current_user.is_engineer:
+        form = EngineerForm(request.POST or None)
+        if form.is_valid():
+            print("Are you out of your mind")
     context = {
         "form": form,
         "page_name": "Update Your Profile Info",

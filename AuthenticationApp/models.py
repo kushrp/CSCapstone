@@ -175,12 +175,14 @@ class Student(models.Model):
     return False
 
 
-
-class Engineers(models.Model):
-    engID = models.ForeignKey(MyUser, null=True)
-    almamater = models.CharField(max_length=500, null=True)
-    contact = models.IntegerField(null=True)
-    about = models.CharField(max_length=1000, null=True)
-    company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
-    company = models.CharField(max_length=50, null=True)
-    photo = models.ImageField(upload_to="static/engineerimages", default=0)
+class Engineer(models.Model):
+  engID = models.OneToOneField(
+    MyUser,
+    on_delete=models.CASCADE,
+    primary_key=True)
+  almamater = models.CharField(max_length=500, null=True)
+  contact = models.IntegerField(null=True)
+  bio = models.CharField(max_length=1000, null=True)
+  company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
+  # company = models.CharField(max_length=50, null=True)
+  photo = models.ImageField(upload_to="static/engineerimages", default=0)

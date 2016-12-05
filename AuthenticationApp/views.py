@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from .forms import LoginForm, RegisterForm, UpdateForm
-from .models import MyUser, Student, Teacher
+from .models import MyUser, Student, Teacher, Engineer
 
 
 # Auth Views
@@ -75,12 +75,13 @@ def auth_register(request):
       new_student = Student(user=new_user)
       new_student.save()
     elif is_engine:
-      print()
+      new_engine = Engineer(engID=new_user)
+      new_engine.save()
     else:
       new_teacher = Teacher(teacher=new_user)
       new_teacher.save()
 
-    login(request, new_user);
+    login(request, new_user)
     messages.success(request, 'Success! Your account was created.')
     return HttpResponseRedirect("/home")
 
