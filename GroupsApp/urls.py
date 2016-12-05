@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^group/join$', views.joinGroup, name='GJoin'),
     url(r'^group/unjoin$', views.unjoinGroup, name='GUnjoin'),
     url(r'^group$', views.getGroup, name='Group'),
+    url(r'^group/query$', views.getMyGroups, name="Get My Groups"),
+    url(r'^group/add$', views.addMember, name="Add Member Groups"),
 ]
