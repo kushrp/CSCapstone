@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
 from . import forms
+from CommentsApp.forms import CommentForm
+from CommentsApp.models import Comment,Sub_Comment
 
 def getGroups(request):
     if request.user.is_authenticated():
@@ -32,12 +34,15 @@ def getGroup(request):
         in_group = models.Group.objects.get(name__exact=in_name)
         is_member = in_group.members.filter(email__exact=request.user.email)
         members = in_group.members.values_list()
+        comments_list = Comment.objects.filter(group_id=in_group.id)
         print(members)
         form = forms.MemberForm()
         context = {
             'group' : in_group,
             'userIsMember': is_member,
             'member_form': form,
+            'comment_form': CommentForm(),
+            'comments_list': comments_list,
         }
         return render(request, 'group.html', context)
     # render error page if user is not logged in
@@ -54,11 +59,14 @@ def addMember(request):
                 group = models.Group.objects.get(id=group_id)
                 group.members.add(myuser)
                 is_member = group.members.filter(email__exact=request.user.email)
+                comments_list = Comment.objects.filter(group_id=group.id)
                 group.save()
                 context = {
                     'group': group,
                     'userIsMember': is_member,
                     'member_form': forms.MemberForm(),
+                    'comment_form': CommentForm(),
+                    'comments_list': comments_list,
                 }
                 return render(request, 'group.html', context)
         else:
@@ -99,9 +107,12 @@ def joinGroup(request):
         in_group.save();
         request.user.group_set.add(in_group)
         request.user.save()
+        comments_list = Comment.objects.filter(group_id=in_group.id)
         context = {
             'group' : in_group,
             'userIsMember': True,
+            'comment_form': CommentForm(),
+            'comments_list': comments_list,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
@@ -114,9 +125,12 @@ def unjoinGroup(request):
         in_group.save();
         request.user.group_set.remove(in_group)
         request.user.save()
+        comments_list = Comment.objects.filter(group_id=in_group.id)
         context = {
             'group' : in_group,
             'userIsMember': False,
+            'comment_form': CommentForm(),
+            'comments_list': comments_list,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')
