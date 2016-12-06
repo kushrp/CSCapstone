@@ -9,4 +9,5 @@ from . import views
 urlpatterns = [
     url(r'^project/all$', views.getProjects, name='Projects'),
     url(r'^project$', views.getProject, name='Project'),
+    url(r'^project/form$', views.getProjectForm, name="Project Form")
 ]

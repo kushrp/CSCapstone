@@ -14,3 +14,8 @@ def getProjects(request):
 
 def getProject(request):
 	return render(request, 'project.html')
+
+def getProjectForm(request):
+	if request.user.is_authenticated():
+		return render(request, 'projectform.html')
+	return render(request, 'autherror.html')

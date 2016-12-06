@@ -21,9 +21,9 @@
                     <a class="btn btn-sm btn-default" style="float: right" href="/group/all">Show All Groups</a>
                 {% elif user.is_engineer %}
                     <a class="btn btn-sm btn-default" style="float: right" href="/update_profile">Edit Account Info</a>
-                    <a class="btn btn-sm btn-default" style="float: right" href="">Create Project</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="/project/form">Create Project</a>
                     <a class="btn btn-sm btn-default" style="float: right" href="">Show My Projects</a>
-                    <a class="btn btn-sm btn-default" style="float: right" href="">Show All Projects</a>
+                    <a class="btn btn-sm btn-default" style="float: right" href="/project/all">Show All Projects</a>
                 {% endif %}
             {% else %}
                 <p><b>{{ user.first_name }}</b> <b>{{ user.last_name }}</b></p>
