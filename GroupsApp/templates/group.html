@@ -40,4 +40,48 @@
 		</div>
 	</div>
 
+    <div class="container">
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th style="width: 20%">Time</th>
+                        <th style="width: 80%">Comment</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in comments_list %}
+                   <tr>
+
+                       <td>{{ item.time }}</td>
+                       <td>
+                           {{ item.comment }}
+                           {% for sub_com in item.subs.all %}
+                                <p>{{ sub_com.time }}</p>
+                               <p>{{ sub_com.data }}</p>
+                               <hr/>
+                           {% endfor %}
+
+                           <br/>
+                           <form method="post" enctype="multipart/form-data" action="/addSubcomment?id={{ item.id }}&group={{ group.name }}" class="panel-body validate">
+                               {% csrf_token %}
+                                 {{ comment_form.as_p }}
+                                 <input type="submit" value="Post" class="btn btn-sm btn-danger">
+                           </form>
+                       </td>
+                   </tr>
+                   {% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+    <div class="panel panel-default">
+        <form method="post" enctype="multipart/form-data" action="/addcomment?group={{ group.name }}&id={{ group.id }}" class="panel-body validate">
+        {% csrf_token %}
+                {{ comment_form.as_p }}
+             <input type="submit" value="Submit" class="btn btn-primary">
+        </form>
+    </div>
+
 {% endblock %}
