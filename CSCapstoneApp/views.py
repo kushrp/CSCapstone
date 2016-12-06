@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib import messages
 from UniversitiesApp import models
+from CompaniesApp.models import Company
 
 from .forms import TeacherForm, StudentForm, EngineerForm
 
@@ -125,7 +126,29 @@ def profile_edit(request):
     elif current_user.is_engineer:
         form = EngineerForm(request.POST or None)
         if form.is_valid():
-            print("Are you out of your mind")
+          resume = form.cleaned_data['resume']
+          experience = form.cleaned_data['experience']
+          company = Company.objects.get(id=form.cleaned_data['company'])
+          photo = form.cleaned_data['photo']
+          contact = form.cleaned_data['contact']
+          almamater = form.cleaned_data['almamater']
+          bio = form.cleaned_data['bio']
+          e = Engineer.objects.get(engID=request.user)
+          e.company = company
+          e.resume = resume
+          e.experience = experience
+          e.photo = photo
+          e.contact = contact
+          e.bio = bio
+          e.almamater = almamater
+          e.save()
+
+          messages.success(request, 'Success, your profile was saved!')
+          return render(request, 'home.html', {
+            'profile': e,
+            'user': request.user,
+            'type': 'Engineer',
+          })
     context = {
         "form": form,
         "page_name": "Update Your Profile Info",

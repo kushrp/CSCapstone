@@ -12,10 +12,8 @@ class Project(models.Model):
     updated_at = models.DateTimeField('date updated')
     company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
     languages = models.CharField(max_length=1000, null=True)
-    years = models.IntegerField();
+    years = models.IntegerField(default=0);
     speciality = models.CharField(max_length=100, null=True)
-    # TODO Task 3.5: Add field for company relationship
-    # TODO Task 3.5: Add fields for project qualifications (minimum required: programming language, years of experience, speciality)
 
     def __str__(self):
         return self.name
