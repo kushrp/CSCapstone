@@ -31,6 +31,8 @@ def getGroup(request):
         in_name = request.GET.get('name', 'None')
         in_group = models.Group.objects.get(name__exact=in_name)
         is_member = in_group.members.filter(email__exact=request.user.email)
+        members = in_group.members.values_list()
+        print(members)
         form = forms.MemberForm()
         context = {
             'group' : in_group,

@@ -176,10 +176,7 @@ class Student(models.Model):
 
 
 class Engineer(models.Model):
-  engID = models.OneToOneField(
-    MyUser,
-    on_delete=models.CASCADE,
-    primary_key=True)
+  engID = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=True)
   almamater = models.CharField(max_length=500, null=True)
   contact = models.IntegerField(null=True)
   bio = models.CharField(max_length=1000, null=True)
