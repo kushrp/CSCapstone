@@ -8,7 +8,7 @@
 			<h3 style="margin: 0px; padding: 0px;">Create Project</h3>
 		</div>
 		<div class="panel panel-default">
-			<form method="post" action="" class="panel-body validate">
+			<form method="post" action="/project/formsuccess" class="panel-body validate">
 				{% csrf_token %}
 				<label for="name">Name</label>
                 <h6 style="color:red">{{ error }}</h6>
