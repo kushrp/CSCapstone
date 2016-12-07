@@ -87,6 +87,9 @@
                 </div>
                 <div class="col-xs-6">
                     <h5>Project Suggestions</h5>
+                    {% for item in matching_projs %}
+                        <p>{{ item.name }}</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
