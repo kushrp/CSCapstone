@@ -18,3 +18,7 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+class Bookmark(models.Model):
+    project = models.ForeignKey("ProjectsApp.Project", on_delete=models.CASCADE, null=True)
+    usr = models.ForeignKey("AuthenticationApp.MyUser", on_delete=models.CASCADE, null=True)

@@ -5,6 +5,11 @@
 	<!-- Content -->
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
+            {% if book == True %}
+			    <a href="" class="btn btn-default">Remove Bookmark</a>
+			{% else %}
+			    <a href="" class="btn btn-default">Bookmark</a>
+			{% endif %}
 			<h1>{{ project.name }}</h1>
 			<p>{{ project.description }}</p>
 			{% if False == True %}

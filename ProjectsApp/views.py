@@ -7,6 +7,7 @@ from . import models
 from . import forms
 from CompaniesApp.models import Company
 from AuthenticationApp.models import Engineer
+from AuthenticationApp.models import MyUser
 from datetime import datetime
 
 
@@ -81,3 +82,16 @@ def getProjectFormSuccess(request):
     })
   # render error page if user is not logged in
   return render(request, 'autherror.html')
+
+
+def getBookmarks(request):
+  if request.user.is_authenticated():
+    in_user_id = request.user.id
+    print(in_user_id)
+    bookmark_list = models.Bookmark.objects.all().filter(usr=in_user_id)
+    context = {
+      'bookmarks': list(bookmark_list)
+    }
+    return render(request, 'mybookmarks.html', context)
+  return render(request, 'autherror.html')
+
