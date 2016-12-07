@@ -36,6 +36,9 @@ class EngineerForm(forms.Form):
     resume = forms.FileField(label='Resume', widget=forms.FileInput, required=False)
     experience = forms.IntegerField(label='Experience', widget=forms.NumberInput)
     photo = forms.ImageField(label='Pic', required=False)
+    contact = forms.IntegerField(label="Phone", widget=forms.NumberInput)
+    bio = forms.CharField(label="bio", widget=forms.TextInput)
+    almamater = forms.CharField(label="almamater", widget=forms.TextInput)
     def __init__(self, *args, **kwargs):
       super(EngineerForm, self).__init__(*args, **kwargs)
       self.fields['company'] = forms.ChoiceField(label="Company", widget=forms.Select(),

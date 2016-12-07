@@ -114,6 +114,7 @@ def getCourse(request):
       'university': in_university,
       'course': in_course,
       'userInCourse': is_member,
+      'user': request.user,
     }
     return render(request, 'course.html', context)
   return render(request, 'autherror.html')

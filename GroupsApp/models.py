@@ -14,6 +14,8 @@ class Group(models.Model):
     owner = models.ForeignKey('AuthenticationApp.MyUser', on_delete=models.CASCADE, null=True, related_name='maalik')
     project = models.OneToOneField(Project, null=True)
     match_factor = models.IntegerField(default=0)
-    
+    assigned = models.BooleanField(default=False,)
+    speciality = models.CharField(max_length=100, null=True)
+
     def __str__(self):
         return self.name

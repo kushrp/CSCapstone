@@ -5,13 +5,12 @@
 	<!-- Content -->
 	<div class="container" role="main">
 		<div class="jumbotron">
-			<h3 style="margin: 0px; padding: 0px;">Create Group</h3>
+			<h3 style="margin: 0px; padding: 0px;">Create Project</h3>
 		</div>
 		<div class="panel panel-default">
-			<form method="post" action="/group/formsuccess" class="panel-body validate">
+			<form method="post" action="/project/formsuccess" class="panel-body validate">
 				{% csrf_token %}
 				{{ form.as_p }}
-				<br>
 				<input type="submit" value="Submit" class="btn btn-primary">
 			</form>
 		</div>
