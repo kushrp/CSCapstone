@@ -7,7 +7,8 @@
             <img src="/{{ university.photo }}" alt="University Image" width=150/>
 			<h2>{{ course.tag }}</h2>
 			<h3>{{ course.name }}</h3>
-			<p>{{ course.description }}</p>
+            <p>{{ course.description }}</p>
+            <h4>Teacher name" {{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</h4>
             {% if user.is_student == True %}
             {% if userInCourse %}
             <a href="/university/course/unjoin?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Unjoin this Course</a>

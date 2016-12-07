@@ -25,7 +25,7 @@
 				<tbody>
 					{% for item in courses %}
 					<tr>
-						<td>{{ item.tag }}</td>
+                        <td><a href="/university/course?name={{ item.university }}&course={{ item.tag }}">{{ item.tag }}</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
