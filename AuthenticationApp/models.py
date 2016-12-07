@@ -181,5 +181,4 @@ class Engineer(models.Model):
   contact = models.IntegerField(null=True)
   bio = models.CharField(max_length=1000, null=True)
   company = models.ForeignKey("CompaniesApp.Company", on_delete=models.CASCADE, null=True)
-  # company = models.CharField(max_length=50, null=True)
   photo = models.ImageField(upload_to="static/engineerimages", default=0)

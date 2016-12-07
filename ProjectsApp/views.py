@@ -37,7 +37,7 @@ def getProject(request):
     context = {
       'project': project,
     }
-    return render(request, 'project.html.html', context)
+    return render(request, 'project.html', context)
   # render error page if user is not logged in
   return render(request, 'autherror.html')
 
@@ -60,18 +60,16 @@ def getProjectFormSuccess(request):
           return render(request, 'projectform.html', {'error': 'Error: That Project name already exists!'})
 
         current_eng = Engineer.objects.get(engID=request.user)
-        print(current_eng)
-        current_comp = current_eng.company
         new_project = models.Project(
-          engID=Engineer.engID,
+          engID=current_eng,
           name=form.cleaned_data['name'],
           description=form.cleaned_data['description'],
           created_at=datetime.now(),
           updated_at=datetime.now(),
-          company=current_comp,
+          company=current_eng.company,
           languages=form.cleaned_data['languages'],
           years=form.cleaned_data['years'],
-          speciality=form.cleaned_data['speciality'])
+          speciality=form.cleaned_data['speciality'],)
         new_project.save()
 
         context = {
