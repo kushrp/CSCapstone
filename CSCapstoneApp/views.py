@@ -75,14 +75,20 @@ def profile_edit(request):
         print("The form is valid:  " + str(form.is_valid()))
         if form.is_valid():
           print(form.cleaned_data['university'])
+          # print(form)
           university_id = form.cleaned_data['university']
           university = models.University.objects.get(id=university_id)
           department = form.cleaned_data['department']
           contact = form.cleaned_data['contact']
           almamater = form.cleaned_data['almamater']
-          # pic = request.FILES['photo']
 
+
+          # pic = request.FILES['photo']
           t = Teacher.objects.get(teacher=request.user)
+          if t.university is not None:
+              prev_uni = t.university
+              prev_uni.members.remove(current_user)
+          university.members.add(current_user)
           t.university = university
           t.department = department
           t.contact = contact
@@ -108,6 +114,10 @@ def profile_edit(request):
           year = form.cleaned_data['year']
           # pic = request.FILES['photo']
           s = Student.objects.get(user=request.user)
+          if s.university is not None:
+              prev_uni = s.university
+              prev_uni.members.remove(current_user)
+          university.members.add(current_user)
           s.major = major
           s.skills = skills
           s.resume = resume
