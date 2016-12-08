@@ -36,6 +36,7 @@ def getProject(request):
     project = models.Project.objects.get(name__exact=in_name)
     context = {
       'project': project,
+      'currentuser': request.user,
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in

@@ -18,7 +18,7 @@
                     <tr>
                         <td><a href="/company?name={{ item.name }}"><img src="/{{ item.photo }}" alt="Company Image" width=50/></a></td>
                         <td><a href="/company?name={{ item.name }}">{{ item.name }}</a></td>
-                        <td>{{ item.description }}</td>
+                        <td>{{ item.description|safe }}</td>
                     </tr>
                     {% endfor %}
 				</tbody>
