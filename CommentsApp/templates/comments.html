@@ -14,7 +14,7 @@
                    {% for item in comments %}
                    <tr>
                        <td>{{ item.time }}</td>
-                       <td>{{ item.comment }}</td>
+                       <td>{{ item.comment|safe }}</td>
                    </tr>
                    {% endfor %}
                 </tbody>

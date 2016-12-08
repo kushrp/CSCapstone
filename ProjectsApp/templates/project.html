@@ -6,7 +6,7 @@
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
 			<h1>{{ project.name }}</h1>
-			<p>{{ project.description }}</p>
+			<p>{{ project.description|safe }}</p>
 			{% if False == True %}
 			    <a href="" class="btn btn-default">Leave The Project</a>
 			{% else %}
