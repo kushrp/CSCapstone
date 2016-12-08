@@ -9,3 +9,6 @@ class ProjectForm(forms.Form):
   languages = forms.CharField(label="Programming Languages", max_length=1000)
   speciality = forms.CharField(label="Speciality", max_length=100)
   years = forms.IntegerField(label="Years of Programming experience", min_value=0)
+
+class updateStatus(forms.Form):
+  status = forms.IntegerField(label="status", min_value=0, max_value=100)
