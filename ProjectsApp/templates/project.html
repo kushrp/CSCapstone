@@ -11,12 +11,14 @@
 			    <a href="" class="btn btn-default">Bookmark</a>
 			{% endif %}
 			<h1>{{ project.name }}</h1>
-			<p>{{ project.description }}</p>
+			<p>{{ project.description|safe }}</p>
+			{% if currentuser.is_student %}
 			{% if False == True %}
-			    <a href="" class="btn btn-default">Leave The Project</a>
+                <a href="" class="btn btn-default">Leave The Project</a>
 			{% else %}
 			    <a href="" class="btn btn-default">Take Up The Project</a>
 			{% endif %}
+            {% endif %}
 	    </div>
     </div>
 

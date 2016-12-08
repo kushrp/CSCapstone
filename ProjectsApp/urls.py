@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^project/all$', views.getProjects, name='Projects'),
     url(r'^project$', views.getProject, name='Project'),
     url(r'^project/form$', views.getProjectForm, name="Project Form"),
+    url(r'^project/getMyProjects$', views.getMyProjects, name="GetMyProjects"),
     url(r'^project/formsuccess$', views.getProjectFormSuccess, name="Project Form Success"),
     url(r'^project/bookmarks$', views.getBookmarks, name="Bookmarks"),
 ]
