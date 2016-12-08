@@ -24,6 +24,13 @@
 			{% if currentuser.is_student %}
                 {% if project.taken == True %}
                     <a href="project/ditchProject?proj={{ project.id }}" class="btn btn-primary" style="float: right">Leave The Project</a>
+                    <form method="post" action="/project/updateprogress?id={{ project.id }}" class="panel-body validate">
+                    {% csrf_token %}
+                    <label for="status">Project Status : </label>
+                    <input type="number" min="0" max="100" id="status" name="status" value={{ project.status }}>
+                    <!--<button type="submit" class="btn btn-primary" id="submit" name="submit" >Update Progress</button> -->
+                    <input class="btn btn-success" type="submit" id="submit" value="Update Progress">
+                    </form>
                 {% else %}
                     <a href="project/takeProject?proj={{ project.id }}" class="btn btn-primary" style="float: right">Take Up The Project</a>
                 {% endif %}
@@ -33,6 +40,9 @@
             {% else %}
             <p>Unassigned</p>
         {% endif %}
+        <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow={{ project.status }} aria-valuemin="0" aria-valuemax="100" style="width:{{ project.status }}%">{{ project.status }}%</div>
+        </div>
 	    </div>
 
 {#        {% if project.taken == True %}#}

@@ -8,10 +8,12 @@
 			<h3>{{ company.name }}</h3>
 			<p>{{ company.description|safe }}</p>
             <h5><a href="{{ company.website }}">Website</a></h5>
-            {% if userIsMember %}
-            <a href="/company/unjoin?name={{ company.name }}" class="btn btn-default">Unjoin this Company</a>
-            {% else %}
-            <a href="/company/join?name={{ company.name }}" class="btn btn-default">Join this Company</a>
+            {% if engine %}
+                {% if userIsMember %}
+                <a href="/company/unjoin?name={{ company.name }}" class="btn btn-default">Unjoin this Company</a>
+                {% else %}
+                <a href="/company/join?name={{ company.name }}" class="btn btn-default">Join this Company</a>
+                {% endif %}
             {% endif %}
 		</div>
     </div>
