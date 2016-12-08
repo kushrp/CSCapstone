@@ -7,6 +7,18 @@
 		<div class="jumbotron">
 			<h1>{{ project.name }}</h1>
 			<p>{{ project.description|safe }}</p>
+            <!--
+            {% if userIsMember %}
+            <a href="/university/unjoin?name={{ university.name }}" class="btn btn-default">Unjoin this University</a>
+            {% else %}
+            <a href="/university/join?name={{ university.name }}" class="btn btn-default">Join this University</a>
+            {% endif %}
+            -->
+            {% if isbookmarked == 0 %}
+            <a href="/project/addbookmark?id={{ project.id }}" class="btn btn-primary">Bookmark this project</a>
+            {% else %}
+            <a href="/project/removebookmark?id={{ project.id }}" class="btn btn-primary">Un-Bookmark this project</a>
+            {% endif %}
 			{% if currentuser.is_student %}
                 {% if project.taken == True %}
                     <a href="project/ditchProject?proj={{ project.id }}" class="btn btn-default">Leave The Project</a>
