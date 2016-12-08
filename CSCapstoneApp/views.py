@@ -124,8 +124,6 @@ def profile_edit(request):
             department = form.cleaned_data['department']
             contact = form.cleaned_data['contact']
             almamater = form.cleaned_data['almamater']
-
-
             pic = request.FILES['photo']
             t = Teacher.objects.get(teacher=request.user)
             if t.university is not None:
