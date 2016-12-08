@@ -34,6 +34,7 @@ def getUniversity(request):
       'university': in_university,
       'iseither':is_studentorTeacher,
       'userIsMember': is_member,
+      'user': request.user,
     }
     return render(request, 'university.html', context)
   # render error page if user is not logged in

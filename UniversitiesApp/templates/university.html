@@ -54,7 +54,9 @@
 				</tbody>
 			</table>
 		</div>
+        {% if user.is_professor %}
 		<a href="/university/course/form?name={{ university.name }}" class="btn btn-default">Add a course</a>
+        {% endif %}
 	</div>
 	
 {% endblock %}
