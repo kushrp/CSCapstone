@@ -99,9 +99,12 @@ def getProjectFormSuccess(request):
 
 def takeProject(request):
   if request.user.is_authenticated():
-    group_id = request.GET.get('id')
     project_id = request.GET.get('proj')
-    in_group = Group.objects.get(id=group_id)
+    in_group = None
+    for group in Group.objects.all():
+      if request.user in group.members.all():
+        in_group = group
+        break
     in_project = Project.objects.get(id=project_id)
     if in_group.assigned == False and in_project.taken == False:
       in_group.assigned = True
@@ -120,9 +123,13 @@ def takeProject(request):
 
 def ditchProject(request):
     if request.user.is_authenticated():
-      group_id = request.GET.get('id')
+      in_group = None
+      for group in Group.objects.all():
+        if request.user in group.members.all():
+          in_group = group
+          break
+
       project_id = request.GET.get('proj')
-      in_group = Group.objects.get(id=group_id)
       in_project = Project.objects.get(id=project_id)
 
       if in_group.assigned == True and in_project.taken == True:

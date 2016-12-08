@@ -8,13 +8,17 @@
 			<h1>{{ project.name }}</h1>
 			<p>{{ project.description|safe }}</p>
 			{% if currentuser.is_student %}
-			{% if False == True %}
-                <a href="" class="btn btn-default">Leave The Project</a>
-			{% else %}
-			    <a href="" class="btn btn-default">Take Up The Project</a>
-			{% endif %}
+                {% if project.taken == True %}
+                    <a href="project/ditchProject?proj={{ project.id }}" class="btn btn-default">Leave The Project</a>
+                {% else %}
+                    <a href="project/takeProject?proj={{ project.id }}" class="btn btn-default">Take Up The Project</a>
+                {% endif %}
             {% endif %}
 	    </div>
+
+        {% if project.taken == True %}
+            <p>{{ project.taken_by }}</p>
+        {% endif %}
     </div>
 
 {% endblock %}
