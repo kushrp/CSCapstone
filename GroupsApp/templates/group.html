@@ -9,9 +9,9 @@
 			<p>{{ group.description }}</p>
             {% if user != group.owner %}
 			{% if userIsMember %}
-			    <a href="/group/unjoin?name={{ group.name }}" class="btn btn-default">Unjoin this Group</a>
+			    <a href="/group/unjoin?name={{ group.name }}" class="btn btn-warning" style="float: right;">Unjoin this Group</a>
 			{% else %}
-			<a href="/group/join?name={{ group.name }}" class="btn btn-default">Join this Group</a>
+			<a href="/group/join?name={{ group.name }}" class="btn btn-success" style="float: right;">Join this Group</a>
 			{% endif %}
             {% else %}
                 <a href="/group/delete?name={{ group.name }}" class="btn btn-danger" style="float: right;">Delete Group</a>
