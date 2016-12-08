@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 from . import models
 from . import forms
+from ProjectsApp.models import Project
 
 def getCompanies(request):
     if request.user.is_authenticated():
@@ -23,9 +24,11 @@ def getCompany(request):
         in_name = request.GET.get('name', 'None')
         in_company = models.Company.objects.get(name__exact=in_name)
         is_member = in_company.members.filter(email__exact=request.user.email)
+        projects = Project.objects.filter(company=in_company)
         context = {
             'company' : in_company,
             'userIsMember': is_member,
+            'projects': projects,
         }
         return render(request, 'company.html', context)
     # render error page if user is not logged in
