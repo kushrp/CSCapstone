@@ -10,4 +10,4 @@ class GroupForm(forms.Form):
     speciality = forms.CharField(label='Group speciality', max_length=100, widget=forms.TextInput)
 
 class MemberForm(forms.Form):
-    email = forms.CharField(label='Email', widget=forms.EmailInput, required=True)
+    email = forms.CharField(label='Email', required=True)
