@@ -78,8 +78,12 @@ def joinUniversity(request):
     in_university = models.University.objects.get(name__exact=in_name)
     in_university.members.add(request.user)
     in_university.save()
-    request.user.university_set.add(in_university)
-    request.user.save()
+    curteach = Teacher.objects.get(teacher=request.user.id)
+    prev_uni = curteach.university
+    if prev_uni is not None:
+      prev_uni.members.remove(request.user)
+    curteach.university = in_university
+    curteach.save()
     context = {
       'university': in_university,
       'userIsMember': True,
@@ -93,9 +97,13 @@ def unjoinUniversity(request):
     in_name = request.GET.get('name', 'None')
     in_university = models.University.objects.get(name__exact=in_name)
     in_university.members.remove(request.user)
-    in_university.save();
-    request.user.university_set.remove(in_university)
-    request.user.save()
+    in_university.save()
+    curteach = Teacher.objects.get(teacher=request.user.id)
+    prev_uni = curteach.university
+    if prev_uni is not None:
+      prev_uni.members.remove(request.user)
+    curteach.university = None
+    curteach.save()
     context = {
       'university': in_university,
       'userIsMember': False,
@@ -232,24 +240,6 @@ def unjoinCourse(request):
   }
   return render(request, 'course.html', context)
   # return render(request, 'autherror.html')
-
-def unjoinCourse1(request, ):
-  if request.user.is_authenticated():
-    in_university_name = request.GET.get('name', 'None')
-    in_university = models.University.objects.get(name__exact=in_university_name)
-    in_course_tag = request.GET.get('course', 'None')
-    in_course = in_university.course_set.get(tag__exact=in_course_tag)
-    in_course.members.remove(request.user)
-    in_course.save()
-    request.user.course_set.remove(in_course)
-    request.user.save()
-    context = {
-      'university': in_university,
-      'course': in_course,
-      'userInCourse': False,
-    }
-    return render(request, 'course.html', context)
-  return render(request, 'autherror.html')
 
 def getTeachersCourses(request):
   if request.user.is_authenticated():
