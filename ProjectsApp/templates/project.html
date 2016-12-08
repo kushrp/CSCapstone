@@ -6,6 +6,7 @@
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
 			<h1>{{ project.name }}</h1>
+            <h3><i>{{ project.company.name }}</i></h3>
 			<p>{{ project.description|safe }}</p>
             <!--
             {% if userIsMember %}
@@ -29,6 +30,8 @@
             {% endif %}
         {% if project.taken == True %}
             <p>Assigned to: <i><b>{{ project.taken_by }}</b></i></p>
+            {% else %}
+            <p>Unassigned</p>
         {% endif %}
 	    </div>
 
