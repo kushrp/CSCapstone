@@ -33,7 +33,13 @@
 	
 	<!-- Site CSS -->
 	<link rel="stylesheet" type="text/css" href="{% static "css/site.css" %}">
-</head><body>
+
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>tinymce.init({ selector:'textarea' });</script>
+
+</head>
+
+<body>
 	{% block body %}
 
 	{% endblock %}

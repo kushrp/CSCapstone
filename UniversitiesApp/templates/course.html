@@ -7,7 +7,7 @@
             <img src="/{{ university.photo }}" alt="University Image" width=150/>
 			<h2>{{ course.tag }}</h2>
 			<h3>{{ course.name }}</h3>
-            <p>{{ course.description }}</p>
+            <p>{{ course.description|safe }}</p>
             <h4>Teacher name: <em>{{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
             <!--
             {% if user.is_professor == True %}
