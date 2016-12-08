@@ -19,9 +19,14 @@
             {% endif %}
             -->
             {% if user.is_professor == True %}
-                {% if id != None %}
-                    {% if id.university == university %}
-			<a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+                {% if teacher != None %}
+                    {% if teacher.university == course.university %}
+                        <a href="/university/course/remove?name={{ course.university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+                        <form style="float: right;" method="post" enctype="multipart/form-data" action="" class="panel-body validate">
+                            {% csrf_token %}
+                            {{ studentform.as_p }}
+                            <input type="submit" value="Add Member" class="btn btn-primary">
+                        </form>
                     {% endif %}
                 {% endif %}
             {% endif %}

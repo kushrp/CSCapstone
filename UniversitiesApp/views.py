@@ -123,14 +123,15 @@ def getCourse(request):
     is_member = course.members.filter(email__exact=request.user.email)
     curid = Teacher()
     if request.user.is_professor == True:
-      curid = Teacher.objects.get(teacher=request.user.id)
+      curid = Teacher.objects.get(teacher=request.user)
     else:
       curid = None
     context = {
       'course': course,
       'userInCourse': is_member,
       'user': request.user,
-      'id': curid
+      'teacher': curid,
+      'studentform': forms.AddStudentForm(),
     }
     return render(request, 'course.html', context)
   return render(request, 'autherror.html')

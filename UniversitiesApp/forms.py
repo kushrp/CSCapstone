@@ -17,3 +17,6 @@ class CourseForm(forms.Form):
   tag = forms.CharField(label='Tag', max_length=10)
   name = forms.CharField(label='Name', max_length=50)
   description = forms.CharField(label='Description', max_length=300)
+
+class AddStudentForm(forms.Form):
+  email = forms.CharField(label='Email')
