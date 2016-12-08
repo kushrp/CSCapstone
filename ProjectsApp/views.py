@@ -193,3 +193,15 @@ def removeBookmark(request):
     bookmark.delete()
     return HttpResponseRedirect('/project?name=' + current_project.name)
   return render(request, 'autherror.html')
+
+def updateProgress(request):
+  if request.user.is_authenticated():
+    form = forms.updateStatus(request.POST)
+    if request.method == 'POST' and form.is_valid():
+      print(form)
+      project = Project.objects.get(id=request.GET.get('id'))
+      print(project.status)
+      project.status = form.data.get('status')
+      project.save()
+      return HttpResponseRedirect('/project?name=' + project.name)
+  return render(request, 'autherror.html')

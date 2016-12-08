@@ -16,6 +16,7 @@ class Project(models.Model):
     speciality = models.CharField(max_length=100, null=True)
     taken = models.BooleanField(default=False,)
     taken_by = models.ForeignKey("GroupsApp.Group", on_delete=models.CASCADE, null=True)
+    status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
