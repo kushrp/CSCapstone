@@ -179,7 +179,11 @@ def matching_algorithm(group_id):
       for skill in language_reqs:
         if skill in combined_skills:
           skill_match += 1
-      if skill_match == len(language_reqs) and average_experience == project.years and in_group.speciality == project.speciality:
+      print("Number of skills matched " + str(skill_match))
+      print("Languages required " + str(language_reqs))
+      print("Experience required " + str(project.years))
+      print("Speciality of the group " + str(in_group.speciality) + " vs what is needed " + project.speciality)
+      if skill_match >= len(language_reqs) and average_experience >= project.years and in_group.speciality == project.speciality:
         ret.append(project)
     print("Matched projects : " + str(ret))
     return ret

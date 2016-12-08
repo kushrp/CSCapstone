@@ -134,7 +134,6 @@ def courseForm(request):
       messages.warning(request, 'Please update your profile.')
       return HttpResponseRedirect('/home')
     else:
-      print("Came Here as well")
       in_university = models.University.objects.get(name__exact=in_university_name)
       context = {
         'university': in_university
@@ -241,7 +240,7 @@ def unjoinCourse1(request, ):
     in_course_tag = request.GET.get('course', 'None')
     in_course = in_university.course_set.get(tag__exact=in_course_tag)
     in_course.members.remove(request.user)
-    in_course.save();
+    in_course.save()
     request.user.course_set.remove(in_course)
     request.user.save()
     context = {
