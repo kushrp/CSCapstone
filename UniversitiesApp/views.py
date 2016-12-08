@@ -166,7 +166,7 @@ def unjoinUniversity(request):
 def getCourse(request):
   if request.user.is_authenticated():
     course_id = request.GET.get('course')
-    course = models.Course.objects.get(id=course_id)
+    course = models.Course.objects.get(tag=course_id)
     is_member = course.members.filter(email__exact=request.user.email)
     curid = Teacher()
     if request.user.is_professor == True:
