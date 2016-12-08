@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from . import models
 from . import forms
+from AuthenticationApp.models import MyUser, Student, Teacher
 
 
 def getUniversities(request):
@@ -76,7 +77,7 @@ def joinUniversity(request):
     in_name = request.GET.get('name', 'None')
     in_university = models.University.objects.get(name__exact=in_name)
     in_university.members.add(request.user)
-    in_university.save();
+    in_university.save()
     request.user.university_set.add(in_university)
     request.user.save()
     context = {
@@ -110,11 +111,17 @@ def getCourse(request):
     in_course_tag = request.GET.get('course', 'None')
     in_course = in_university.course_set.get(tag__exact=in_course_tag)
     is_member = in_course.members.filter(email__exact=request.user.email)
+    curid = Teacher()
+    if request.user.is_professor == True:
+      curid = Teacher.objects.get(teacher=request.user.id)
+    else:
+      curid = None
     context = {
       'university': in_university,
       'course': in_course,
       'userInCourse': is_member,
       'user': request.user,
+      'id': curid
     }
     return render(request, 'course.html', context)
   return render(request, 'autherror.html')
@@ -207,6 +214,26 @@ def joinCourse(request):
 
 
 def unjoinCourse(request):
+  curid = request.GET.get('id','None')
+  curmyuser = MyUser.objects.get(id=curid)
+  # if request.user.is_authenticated():
+  in_university_name = request.GET.get('name', 'None')
+  in_university = models.University.objects.get(name__exact=in_university_name)
+  in_course_tag = request.GET.get('course', 'None')
+  in_course = in_university.course_set.get(tag__exact=in_course_tag)
+  in_course.members.remove(curmyuser)
+  in_course.save()
+  curmyuser.course_set.remove(in_course)
+  curmyuser.save()
+  context = {
+    'university': in_university,
+    'course': in_course,
+    'userInCourse': False,
+  }
+  return render(request, 'course.html', context)
+  # return render(request, 'autherror.html')
+
+def unjoinCourse1(request, ):
   if request.user.is_authenticated():
     in_university_name = request.GET.get('name', 'None')
     in_university = models.University.objects.get(name__exact=in_university_name)

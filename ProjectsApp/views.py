@@ -3,6 +3,7 @@
 Created by Harris Christiansen on 10/02/16.
 """
 from django.shortcuts import render
+from django.contrib import messages
 from . import models
 from . import forms
 from django.contrib import messages
@@ -11,6 +12,7 @@ from AuthenticationApp.models import Engineer
 from datetime import datetime
 from GroupsApp.models import Group
 from ProjectsApp.models import Project
+
 from django.http import HttpResponseRedirect
 
 
@@ -40,6 +42,7 @@ def getProject(request):
     project = models.Project.objects.get(name__exact=in_name)
     context = {
       'project': project,
+      'currentuser': request.user,
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
@@ -48,9 +51,16 @@ def getProject(request):
 
 def getProjectForm(request):
   if request.user.is_authenticated():
-    return render(request, 'projectform.html', {
-      'form': forms.ProjectForm()
-    })
+    in_company_name = request.GET.get('name', 'None')
+    if in_company_name == 'None':
+      messages.warning(request, 'Please update your profile.')
+      return HttpResponseRedirect('/home')
+    else:
+      in_company = models.Company.objects.get(name__exact=in_company_name)
+      context = {
+        'company': in_company
+      }
+      return render(request, 'projectform.html', {'form': forms.ProjectForm(),'company': in_company })
   # render error page if user is not logged in
   return render(request, 'autherror.html')
 
