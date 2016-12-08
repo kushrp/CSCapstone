@@ -8,7 +8,7 @@
 			<h2>{{ course.tag }}</h2>
 			<h3>{{ course.name }}</h3>
             <p>{{ course.description|safe }}</p>
-            <h4>Teacher name: <em>{{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
+            <h4>Teacher name: &nbsp;<em> {{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
             <!--
             {% if user.is_professor == True %}
                 {% if userInCourse %}

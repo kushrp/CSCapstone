@@ -148,7 +148,7 @@ class Student(models.Model):
   major = models.CharField(max_length=500, null=True)
   skills = models.CharField(max_length=2048, null=True)
   experience = models.IntegerField(null=True)
-  resume = models.FileField(null=True)
+  resume = models.FileField(upload_to="static/studentresumes", default=0)
   year = models.CharField(max_length=20, null=True)
   photo = models.ImageField(upload_to="static/studentimages", default=0)
 
