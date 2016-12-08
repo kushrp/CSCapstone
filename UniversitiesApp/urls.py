@@ -21,4 +21,5 @@ urlpatterns = [
   url(r'^university/course$', views.getCourse, name="Course"),
   url(r'^university/courses/teacher$', views.getTeachersCourses, name="Teacher Courses"),
   url(r'^university$', views.getUniversity, name='University'),
+  # url(r'^university/course/deletemember$', views.deletemember, name="Delete student"),
 ]
