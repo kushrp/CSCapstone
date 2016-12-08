@@ -21,6 +21,36 @@ def getUniversities(request):
   # render error page if user is not logged in
   return render(request, 'autherror.html')
 
+def addStudent(request):
+  if request.user.is_authenticated():
+    if request.method == 'POST':
+      form = forms.AddStudentForm(request.POST)
+      if form.is_valid():
+        val_dict = form.cleaned_data
+        email = val_dict['email']
+        curr_student= MyUser.objects.get(email=email)
+        id = request.GET.get('id')
+        curr_course = models.Course.objects.get(id=id)
+        curr_course.members.add(curr_student)
+        curr_course.save()
+        return HttpResponseRedirect("/university/course?id=" + id)
+      else:
+        return HttpResponseRedirect("/university/course?id="+id)
+    else:
+      return HttpResponseRedirect("/university/course?id=" + id)
+  # render error page if user is not logged in
+  return render(request, 'autherror.html')
+
+def removeStudent(request):
+  id = request.GET.get('cid')
+  if request.user.is_authenticated():
+      course = models.Course.objects.get(id=request.GET.get('cid'))
+      student = MyUser.objects.get(id=request.GET.get('id'))
+      course.members.remove(student)
+      course.save()
+      return HttpResponseRedirect("/university/course?id=" + id)
+  # render error page if user is not logged in
+  return render(request, 'autherror.html')
 
 def getUniversity(request):
   if request.user.is_authenticated():
