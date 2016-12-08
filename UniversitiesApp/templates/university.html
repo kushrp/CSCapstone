@@ -47,14 +47,16 @@
 					{% for item in university.course_set.all %}
 					<tr>
 						<td><a href="/university/course?name={{ university.name }}&course={{ item.tag }}">{{ item.tag }}</a></td>
-						<td><a href="/university/course?name={{ university.name }}&course={{ item.tag }}">{{ item.name }}</a></td>
+						<td><a href="/university/course?name={{ university.name }}&course={{ item.name }}">{{ item.name }}</a></td>
 						<td>{{ item.description |safe }}</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
+        {% if user.is_professor %}
 		<a href="/university/course/form?name={{ university.name }}" class="btn btn-default">Add a course</a>
+        {% endif %}
 	</div>
 	
 {% endblock %}
