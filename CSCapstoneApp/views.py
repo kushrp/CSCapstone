@@ -6,8 +6,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib import messages
-from UniversitiesApp import models
+from UniversitiesApp.models import Course, University
 from CompaniesApp.models import Company
+from AuthenticationApp.models import MyUser
+from GroupsApp.models import Group
+from ProjectsApp.models import Project
+
 
 from .forms import TeacherForm, StudentForm, EngineerForm
 
@@ -30,40 +34,79 @@ def getHome(request):
     a = None
     type = None
     profiler_id = request.GET.get('id', 'None')
+
     if profiler_id == 'None':
+      class_list = []
+      course_list = []
+      project_list = []
+      groups_list = []
       if request.user.is_professor == True:
-          type = "Teacher"
-          a = Teacher.objects.filter(teacher=request.user)[0]
+        type = "Teacher"
+        a = Teacher.objects.filter(teacher=request.user)[0]
+        class_list = list(Course.objects.filter(teacher=a))
       elif request.user.is_student == True:
-          type = "Student"
-          a = Student.objects.get(user_id=request.user)
+        type = "Student"
+        a = Student.objects.get(user_id=request.user)
+        for course in Course.objects.all():
+          if request.user in course.members.all():
+            course_list.append(course)
+        for group in Group.objects.all():
+          if request.user in group.members.all():
+            groups_list.append(group)
       elif request.user.is_engineer == True:
         type = "Engineer"
         a = Engineer.objects.get(engID=request.user)
+
+        for project in Project.objects.all():
+          if a.id == project.engID.id:
+            project_list.append(project)
 
       return render(request, 'home.html',{
           'profile': a,
           'user': request.user,
           'type': type,
           'request_user': None,
+          'classes': class_list,
+          'courses': course_list,
+          'projects': project_list,
+          'groups': groups_list,
       })
     else:
-      myuser = models.MyUser.objects.get(id=profiler_id)
+      class_list = []
+      course_list = []
+      project_list = []
+      groups_list = []
+
+      myuser = MyUser.objects.get(id=profiler_id)
       if request.user.is_professor == True:
         type = "Teacher"
         a = Teacher.objects.filter(teacher=myuser)[0]
+        class_list = list(Course.objects.filter(teacher=a))
       elif request.user.is_student == True:
         type = "Student"
-        a = Student.objects.get(user_id=request.user)
+        a = Student.objects.get(user_id=myuser)
+        for course in Course.objects.all():
+          if request.user in course.members.all():
+            course_list.append(course)
+        for group in Group.objects.all():
+          if request.user in group.members.all():
+            groups_list.append(group)
       elif request.user.is_engineer == True:
         type = "Engineer"
-        a = Engineer.objects.get(engID=request.user)
+        a = Engineer.objects.get(engID=myuser)
+        for project in Project.objects.all():
+          if request.user.id == project.engID:
+            project_list.append(project)
 
       return render(request, 'home.html', {
         'profile': a,
         'user': myuser,
         'type': type,
         'request_user': request.user,
+        'classes': class_list,
+        'courses': course_list,
+        'projects': project_list,
+        'groups': groups_list,
       })
 
 def profile_edit(request):
@@ -77,7 +120,7 @@ def profile_edit(request):
           print(form.cleaned_data['university'])
           # print(form)
           university_id = form.cleaned_data['university']
-          university = models.University.objects.get(id=university_id)
+          university = University.objects.get(id=university_id)
           department = form.cleaned_data['department']
           contact = form.cleaned_data['contact']
           almamater = form.cleaned_data['almamater']
@@ -106,7 +149,7 @@ def profile_edit(request):
         form = StudentForm(request.POST or None)
         if form.is_valid():
           university_id = form.data['university']
-          university = models.University.objects.get(id=university_id)
+          university = University.objects.get(id=university_id)
           major = form.cleaned_data['major']
           skills = form.cleaned_data['skills']
           resume = form.data['resume']
