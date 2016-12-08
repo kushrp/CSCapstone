@@ -48,6 +48,7 @@ def getGroup(request):
             'comment_form': CommentForm(),
             'comments_list': comments_list,
             'matching_projs': matching_proj,
+            'user': request.user,
         }
         return render(request, 'group.html', context)
     # render error page if user is not logged in
@@ -74,6 +75,7 @@ def addMember(request):
                     'comment_form': CommentForm(),
                     'comments_list': comments_list,
                     'matching_projs': matching_proj,
+                    'user': request.user,
                 }
                 return render(request, 'group.html', context)
         else:
@@ -143,6 +145,7 @@ def unjoinGroup(request):
             'comment_form': CommentForm(),
             'comments_list': comments_list,
             'matching_projs': matching_proj,
+            'user': request.user,
         }
         return render(request, 'group.html', context)
     return render(request, 'autherror.html')

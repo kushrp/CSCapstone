@@ -52,6 +52,7 @@ def getProject(request):
       'comments_list': comments_list,
       'comment_form': CommentForm(),
       'isbookmarked':isbookmarked,
+      'user': request.user,
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
