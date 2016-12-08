@@ -33,4 +33,24 @@
                 </table>
             </div>
         </div>
+
+    <div class="container" role="main">
+            <div class="table-responsive">
+                <table class="table table-striped sortable">
+                    <thead>
+                        <tr>
+                            <th>Company Projects</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in projects %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 {% endblock %}
