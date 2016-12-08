@@ -12,7 +12,7 @@ class Group(models.Model):
     description = models.CharField(max_length=300)
     members = models.ManyToManyField(MyUser)
     owner = models.ForeignKey('AuthenticationApp.MyUser', on_delete=models.CASCADE, null=True, related_name='maalik')
-    project = models.OneToOneField(Project, null=True)
+    project_assgn = models.OneToOneField(Project, null=True)
     match_factor = models.IntegerField(default=0)
     assigned = models.BooleanField(default=False,)
     speciality = models.CharField(max_length=100, null=True)

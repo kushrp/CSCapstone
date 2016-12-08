@@ -5,9 +5,13 @@ Created by Harris Christiansen on 10/02/16.
 from django.shortcuts import render
 from . import models
 from . import forms
+from django.contrib import messages
 from CompaniesApp.models import Company
 from AuthenticationApp.models import Engineer
 from datetime import datetime
+from GroupsApp.models import Group
+from ProjectsApp.models import Project
+from django.http import HttpResponseRedirect
 
 
 def getProjects(request):
@@ -22,11 +26,11 @@ def getProjects(request):
 def getMyProjects(request):
   if request.user.is_authenticated():
     in_user_id = request.GET.get('owner')
-    project_list = models.Project.objects.all().filter(engID=in_user_id)
+    project_list = models.Project.objects.filter(engID=in_user_id)
     context = {
       'projects': list(project_list)
     }
-    return render(request, 'groups.html', context)
+    return render(request, 'projects.html', context)
   return render(request, 'autherror.html')
 
 
@@ -81,3 +85,45 @@ def getProjectFormSuccess(request):
     })
   # render error page if user is not logged in
   return render(request, 'autherror.html')
+
+
+def takeProject(request):
+  if request.user.is_authenticated():
+    group_id = request.GET.get('id')
+    project_id = request.GET.get('proj')
+    in_group = Group.objects.get(id=group_id)
+    in_project = Project.objects.get(id=project_id)
+    if in_group.assigned == False and in_project.taken == False:
+      in_group.assigned = True
+      in_project.taken_by = in_group
+      in_project.taken = True
+
+      in_project.save()
+      in_group.save()
+    else:
+      messages.warning(request, 'Either the project is taken or your group is in the assigned state.')
+    return HttpResponseRedirect('/project?name='+in_project.name)
+  # render error page if user is not logged in
+  return render(request, 'autherror.html')
+
+
+
+def ditchProject(request):
+    if request.user.is_authenticated():
+      group_id = request.GET.get('id')
+      project_id = request.GET.get('proj')
+      in_group = Group.objects.get(id=group_id)
+      in_project = Project.objects.get(id=project_id)
+
+      if in_group.assigned == True and in_project.taken == True:
+        in_group.assigned = False
+        in_project.taken_by = None
+        in_project.taken = False
+
+        in_project.save()
+        in_group.save()
+      else:
+        messages.warning(request, 'Either the project is not taken or your group is not in the assigned state.')
+      return HttpResponseRedirect('/project?name=' + in_project.name)
+    # render error page if user is not logged in
+    return render(request, 'autherror.html')
