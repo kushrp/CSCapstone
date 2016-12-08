@@ -1,0 +1,23 @@
+{% extends "body.html" %}
+{% block content %}
+	<!-- Content -->
+	<div class="container" role="main">
+		<div class="table-responsive">
+			<table class="table table-striped sortable">
+				<thead>
+					<tr>
+						<th>My Bookmarks</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for bookmark in bookmarks %}
+					<tr>
+                        <td><a href="/project?name={{ bookmark.project.name }}">{{ bookmark.project.name }}</a></td>
+                    <!-- unbookmark buttons -->
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

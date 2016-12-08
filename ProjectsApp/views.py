@@ -41,12 +41,17 @@ def getProject(request):
   if request.user.is_authenticated():
     in_name = request.GET.get('name', 'None')
     project = models.Project.objects.get(name__exact=in_name)
+    bookmark_list = models.Bookmark.objects.all().filter(usr=request.user.id,project=project)
+    isbookmarked = 0
+    if len(bookmark_list) > 0:
+      isbookmarked = 1
     comments_list = Comment.objects.filter(project_id=project.id)
     context = {
       'project': project,
       'currentuser': request.user,
       'comments_list': comments_list,
       'comment_form': CommentForm(),
+      'isbookmarked':isbookmarked,
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
@@ -148,3 +153,42 @@ def ditchProject(request):
       return HttpResponseRedirect('/project?name=' + in_project.name)
     # render error page if user is not logged in
     return render(request, 'autherror.html')
+
+
+def getBookmarks(request):
+  if request.user.is_authenticated():
+    in_user_id = request.user.id
+    bookmark_list = models.Bookmark.objects.all().filter(usr=in_user_id)
+    context = {
+      'bookmarks': list(bookmark_list)
+    }
+    return render(request, 'mybookmarks.html', context)
+  return render(request, 'autherror.html')
+
+def addBookmark(request):
+  if request.user.is_authenticated():
+    # context = {
+    #   'user':request.user,
+    #   'project': request.GET.get('id')
+    # }
+    current_project = Project.objects.all().get(id=request.GET.get('id'))
+    print(current_project.id)
+    current_user = request.user
+    bookmark_new = models.Bookmark(project=current_project, usr=current_user)
+    bookmark_new.save()
+
+    return HttpResponseRedirect('/project?name=' + current_project.name)
+  return render(request, 'autherror.html')
+
+def removeBookmark(request):
+  if request.user.is_authenticated():
+    # context = {
+    #   'user':request.user,
+    #   'project': request.GET.get('id')
+    # }
+    current_project = Project.objects.all().get(id=request.GET.get('id'))
+    current_user = request.user
+    bookmark = models.Bookmark.objects.get(project=current_project, usr=current_user);
+    bookmark.delete()
+    return HttpResponseRedirect('/project?name=' + current_project.name)
+  return render(request, 'autherror.html')

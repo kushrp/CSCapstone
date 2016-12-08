@@ -10,6 +10,7 @@
 
             {% if request_user == None %}
                 <p>Welcome <b>{{ user.first_name }}</b>, to the CS390-Python CS Capstone Project!</p>
+                <a class="btn btn-primary" style="float: right" href="/project/mybookmarks">Show My Bookmarks</a>
                 {% if user.is_professor %}
                   <a class="btn btn-primary" style="float: right" href="/update_profile">Edit Account Info</a>
                   <a class="btn btn-primary" style="float: right" href="/university/course/form?name={{ profile.university }}">Create Course</a>
@@ -49,7 +50,7 @@
                 <p><b>Almamater:</b> {{ profile.almamater }}</p>
                 <p><b>Contact:</b> {{ profile.contact }}</p>
                 <p><b>Email:</b> {{ user.email }}</p>
-                <p><b>Company:</b>{{ profile.company_id }}</p>
+                <p><b>Company:</b>{{ profile.company }}</p>
             {% endif %}
         </div>
     </div>
