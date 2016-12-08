@@ -64,7 +64,7 @@ def addMember(request):
                 email = form.cleaned_data['email']
                 group_id = request.GET.get('id')
                 myuser = models.MyUser.objects.get(email=email)
-                group = models.Group.objects.get(id=group_id)
+                group = models.Group.objects.get(i=group_id)
                 group.members.add(myuser)
                 is_member = group.members.filter(email__exact=request.user.email)
                 comments_list = Comment.objects.filter(group_id=group.id)

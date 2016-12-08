@@ -8,7 +8,7 @@
 			<h2>{{ course.tag }}</h2>
 			<h3>{{ course.name }}</h3>
             <p>{{ course.description|safe }}</p>
-            <h4>Teacher name: <em>{{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
+            <h4>Teacher name: &nbsp;<em> {{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
             <!--
             {% if user.is_professor == True %}
                 {% if userInCourse %}
@@ -19,8 +19,9 @@
             {% endif %}
             -->
             {% if user.is_professor == True %}
-                {% if id != None %}
-                    {% if id.university == university %}
+                <!--
+{#                {% if id != None %} #}
+{#                    {% if id.university == university %}#}
 			            <a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
                         <div class="panel panel-default" style="float: left">
                             <form method="post" action="university/course/join?id={{ group.id }}" class="panel-body validate"> {% csrf_token %}
@@ -30,6 +31,15 @@
                             <button type="submit" class='btn btn-primary'>Add Member</button>
                             </form>
                         </div>
+                        -->
+                {% if teacher != None %}
+                    {% if teacher.university == course.university %}
+                        <a href="/university/course/remove?name={{ course.university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+                        <form style="float: right;" method="post" enctype="multipart/form-data" action="" class="panel-body validate">
+                            {% csrf_token %}
+                            {{ studentform.as_p }}
+                            <input type="submit" value="Add Member" class="btn btn-primary">
+                        </form>
                     {% endif %}
                 {% endif %}
             {% endif %}

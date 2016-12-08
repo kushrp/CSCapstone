@@ -114,39 +114,47 @@ def profile_edit(request):
     form = None
 
     if current_user.is_professor:
-        form = TeacherForm(request.POST or None)
-        print("The form is valid:  " + str(form.is_valid()))
-        if form.is_valid():
-          print(form.cleaned_data['university'])
-          # print(form)
-          university_id = form.cleaned_data['university']
-          university = University.objects.get(id=university_id)
-          department = form.cleaned_data['department']
-          contact = form.cleaned_data['contact']
-          almamater = form.cleaned_data['almamater']
+        if request.method == 'POST':
+          form = TeacherForm(request.POST, request.FILES)
+          if form.is_valid():
+            print(form.cleaned_data['university'])
+            # print(form)
+            university_id = form.cleaned_data['university']
+            university = University.objects.get(id=university_id)
+            department = form.cleaned_data['department']
+            contact = form.cleaned_data['contact']
+            almamater = form.cleaned_data['almamater']
 
 
-          # pic = request.FILES['photo']
-          t = Teacher.objects.get(teacher=request.user)
-          if t.university is not None:
-              prev_uni = t.university
-              prev_uni.members.remove(current_user)
-          university.members.add(current_user)
-          t.university = university
-          t.department = department
-          t.contact = contact
-          # t.pic = pic
-          t.almamater = almamater
-          t.save()
-          messages.success(request, 'Success, your profile was saved!')
-
-          return render(request, 'home.html', {
-            'profile': t,
-            'user': request.user,
-            'type': 'Teacher',
-          })
+            pic = request.FILES['photo']
+            t = Teacher.objects.get(teacher=request.user)
+            if t.university is not None:
+                prev_uni = t.university
+                prev_uni.members.remove(current_user)
+            university.members.add(current_user)
+            t.university = university
+            t.department = department
+            t.contact = contact
+            t.pic = pic
+            t.almamater = almamater
+            t.save()
+            messages.success(request, 'Success, your profile was saved!')
+            return render(request, 'home.html', {
+              'profile': t,
+              'user': request.user,
+              'type': 'Teacher',
+            })
+        context = {
+          "form": TeacherForm(),
+          "page_name": "Update Your Profile Info",
+          "button_value": "Update",
+          "links": ["Home"],
+          "user": current_user,
+        }
+        return render(request, 'update.html', context)
     elif current_user.is_student:
-        form = StudentForm(request.POST or None)
+      if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
           university_id = form.data['university']
           university = University.objects.get(id=university_id)
@@ -155,7 +163,7 @@ def profile_edit(request):
           resume = form.data['resume']
           experience = form.cleaned_data['experience']
           year = form.cleaned_data['year']
-          # pic = request.FILES['photo']
+          pic = request.FILES['photo']
           s = Student.objects.get(user=request.user)
           if s.university is not None:
               prev_uni = s.university
@@ -164,7 +172,7 @@ def profile_edit(request):
           s.major = major
           s.skills = skills
           s.resume = resume
-          # s.pic = pic
+          s.pic = pic
           s.experience = experience
           s.university = university
           s.year = year
@@ -176,7 +184,16 @@ def profile_edit(request):
             'user': request.user,
             'type': 'Student',
           })
+      context = {
+        "form": StudentForm(),
+        "page_name": "Update Your Profile Info",
+        "button_value": "Update",
+        "links": ["Home"],
+        "user": current_user,
+      }
+      return render(request, 'update.html', context)
     elif current_user.is_engineer:
+      if request.method == 'POST':
         form = EngineerForm(request.POST or None)
         if form.is_valid():
           resume = form.cleaned_data['resume']
@@ -206,11 +223,11 @@ def profile_edit(request):
             'user': request.user,
             'type': 'Engineer',
           })
-    context = {
-        "form": form,
+      context = {
+        "form": EngineerForm(),
         "page_name": "Update Your Profile Info",
         "button_value": "Update",
         "links": ["Home"],
         "user": current_user,
-    }
-    return render(request, 'update.html', context)
+      }
+      return render(request, 'update.html', context)
