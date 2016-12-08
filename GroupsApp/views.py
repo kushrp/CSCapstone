@@ -24,7 +24,7 @@ def getGroups(request):
 def getMyGroups(request):
   if request.user.is_authenticated():
     in_user_id = request.GET.get('owner')
-    group_list = models.Group.objects.all().filter(owner=in_user_id)
+    group_list = models.Group.objects.filter(members=in_user_id)
     context = {
       'groups' : list(group_list)
     }
@@ -101,6 +101,7 @@ def getGroupFormSuccess(request):
                 new_group = models.Group(name=form.cleaned_data['name'], description=form.cleaned_data['description'],
                                          owner=request.user,speciality=form.cleaned_data['speciality'])
                 new_group.save()
+                new_group.members.add(request.user)
                 context = {
                     'name' : form.cleaned_data['name'],
                 }
@@ -148,6 +149,14 @@ def unjoinGroup(request):
             'user': request.user,
         }
         return render(request, 'group.html', context)
+    return render(request, 'autherror.html')
+
+def deleteGroup(request):
+    if request.user.is_authenticated():
+        in_name = request.GET.get('name', 'None')
+        in_group = models.Group.objects.get(name__exact=in_name)
+        in_group.delete()
+        return HttpResponseRedirect('/home')
     return render(request, 'autherror.html')
 
 def matching_algorithm(group_id):

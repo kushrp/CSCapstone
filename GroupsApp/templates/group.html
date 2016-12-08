@@ -7,17 +7,23 @@
 		<div class="jumbotron">
 			<h1>{{ group.name }}</h1>
 			<p>{{ group.description }}</p>
+            {% if user != group.owner %}
 			{% if userIsMember %}
 			    <a href="/group/unjoin?name={{ group.name }}" class="btn btn-default">Unjoin this Group</a>
-                <div class="panel panel-default" style="float: right">
-                    <form method="post" action="/group/add?id={{ group.id }}" class="panel-body validate"> {% csrf_token %}
-                        {{ member_form.as_p }}
-                        <button type="submit" class='btn btn-primary'>Add Member</button>
-                    </form>
-                </div>
 			{% else %}
 			<a href="/group/join?name={{ group.name }}" class="btn btn-default">Join this Group</a>
 			{% endif %}
+            {% else %}
+                <a href="/group/delete?name={{ group.name }}" class="btn btn-danger" style="float: right;">Delete Group</a>
+            {% endif %}
+            <div class="panel panel-default" style="float: left">
+                <form method="post" action="/group/add?id={{ group.id }}" class="panel-body validate"> {% csrf_token %}
+{#                    {{ member_form.as_p }}#}
+                    <input type="text" placeholder="Student Email" id="email" name="email" class="form-control" data-bvalidator="required" data-bvalidator-msg="Email Required">
+                    <br>
+                    <button type="submit" class='btn btn-primary'>Add Member</button>
+                </form>
+            </div>
 
 	    </div>
     </div>
