@@ -9,14 +9,22 @@
 			<h3>{{ course.name }}</h3>
             <p>{{ course.description }}</p>
             <h4>Teacher name: <em>{{ course.teacher.teacher.first_name }} {{ course.teacher.teacher.last_name }}</em></h4>
-            {% if user.is_student == True %}
+            <!--
+            {% if user.is_professor == True %}
                 {% if userInCourse %}
                 <a href="/university/course/unjoin?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Unjoin this Course</a>
                 {% else %}
                 <a href="/university/course/join?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Join this Course</a>
                 {% endif %}
             {% endif %}
+            -->
+            {% if user.is_professor == True %}
+                {% if id != None %}
+                    {% if id.university == university %}
 			<a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
 		</div>
     </div>
     <div class="container" role="main">
@@ -39,7 +47,7 @@
 						<td>{{ item.get_full_name }}</td>
                         {% if user.is_professor == True %}
                             {% if course.teacher.teacher == user %}
-                                <td><a href=""</td>
+                                <td><a href="/university/course/unjoin?name={{ university.name }}&course={{ course.tag }}&id={{ item.id }}">Remove student</a></td>
                             {% endif %}
                         {% endif %}
 					</tr>
