@@ -12,8 +12,9 @@ from AuthenticationApp.models import Engineer
 from datetime import datetime
 from GroupsApp.models import Group
 from ProjectsApp.models import Project
-
+from CommentsApp.models import Comment
 from django.http import HttpResponseRedirect
+from CommentsApp.forms import CommentForm
 
 
 def getProjects(request):
@@ -44,10 +45,13 @@ def getProject(request):
     isbookmarked = 0
     if len(bookmark_list) > 0:
       isbookmarked = 1
+    comments_list = Comment.objects.filter(project_id=project.id)
     context = {
       'project': project,
       'currentuser': request.user,
-      'isbookmarked':isbookmarked
+      'comments_list': comments_list,
+      'comment_form': CommentForm(),
+      'isbookmarked':isbookmarked,
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
@@ -104,9 +108,12 @@ def getProjectFormSuccess(request):
 
 def takeProject(request):
   if request.user.is_authenticated():
-    group_id = request.GET.get('id')
     project_id = request.GET.get('proj')
-    in_group = Group.objects.get(id=group_id)
+    in_group = None
+    for group in Group.objects.all():
+      if request.user in group.members.all():
+        in_group = group
+        break
     in_project = Project.objects.get(id=project_id)
     if in_group.assigned == False and in_project.taken == False:
       in_group.assigned = True
@@ -125,9 +132,13 @@ def takeProject(request):
 
 def ditchProject(request):
     if request.user.is_authenticated():
-      group_id = request.GET.get('id')
+      in_group = None
+      for group in Group.objects.all():
+        if request.user in group.members.all():
+          in_group = group
+          break
+
       project_id = request.GET.get('proj')
-      in_group = Group.objects.get(id=group_id)
       in_project = Project.objects.get(id=project_id)
 
       if in_group.assigned == True and in_project.taken == True:

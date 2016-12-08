@@ -20,13 +20,81 @@
             <a href="/project/removebookmark?id={{ project.id }}" class="btn btn-primary">Un-Bookmark this project</a>
             {% endif %}
 			{% if currentuser.is_student %}
-			{% if False == True %}
-                <a href="" class="btn btn-primary">Leave The Project</a>
-			{% else %}
-			    <a href="" class="btn btn-primary">Take Up The Project</a>
-			{% endif %}
+                {% if project.taken == True %}
+                    <a href="project/ditchProject?proj={{ project.id }}" class="btn btn-default">Leave The Project</a>
+                {% else %}
+                    <a href="project/takeProject?proj={{ project.id }}" class="btn btn-default">Take Up The Project</a>
+                {% endif %}
             {% endif %}
 	    </div>
+
+        {% if project.taken == True %}
+            <p>{{ project.taken_by }}</p>
+        {% endif %}
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped sortable">
+                            <thead>
+                                <tr>
+                                    <th>Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in group.members.all %}
+                                <tr>
+                                    <td><a href="/home?id={{ item.id }}">{{ item.get_full_name }}</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped sortable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%">Time</th>
+                                    <th style="width: 80%">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in comments_list %}
+                               <tr>
+
+                                   <td>{{ item.time }}</td>
+                                   <td>
+                                       {{ item.comment }}
+                                       {% for sub_com in item.subs.all %}
+                                            <p>{{ sub_com.time }}</p>
+                                           <p>{{ sub_com.data }}</p>
+                                           <hr/>
+                                       {% endfor %}
+
+                                       <br/>
+                                       <form method="post" enctype="multipart/form-data" action="/addSubcomment?id={{ item.id }}&project={{ project.id }}" class="panel-body validate">
+                                           {% csrf_token %}
+                                             {{ comment_form.as_p }}
+                                             <input type="submit" value="Post" class="btn btn-sm btn-danger">
+                                       </form>
+                                   </td>
+                               </tr>
+                               {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <form method="post" enctype="multipart/form-data" action="/addcomment?project={{ project.id }}" class="panel-body validate">
+                        {% csrf_token %}
+                                {{ comment_form.as_p }}
+                             <input type="submit" value="Submit" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
