@@ -27,8 +27,12 @@ def getUniversity(request):
     in_name = request.GET.get('name', 'None')
     in_university = models.University.objects.get(name__exact=in_name)
     is_member = in_university.members.filter(email__exact=request.user.email)
+    is_studentorTeacher = False
+    if request.user.is_student or request.user.is_professor:
+      is_studentorTeacher = True
     context = {
       'university': in_university,
+      'iseither':is_studentorTeacher,
       'userIsMember': is_member,
     }
     return render(request, 'university.html', context)
