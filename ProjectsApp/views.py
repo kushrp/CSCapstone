@@ -65,7 +65,7 @@ def getProjectForm(request):
       messages.warning(request, 'Please update your profile.')
       return HttpResponseRedirect('/home')
     else:
-      in_company = models.Company.objects.get(name__exact=in_company_name)
+      in_company = Company.objects.get(name__exact=in_company_name)
       context = {
         'company': in_company
       }
