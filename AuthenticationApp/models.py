@@ -162,7 +162,7 @@ class Student(models.Model):
     return self.user.email + ", " + self.skills
 
   def __unicode__(self):  # Python 2
-    return self.user.email
+    return self.user.email or u''
 
   def has_perm(self, perm, obj=None):
     return True
