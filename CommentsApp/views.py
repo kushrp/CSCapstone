@@ -26,9 +26,9 @@ def addComment(request):
         group_id = request.GET.get('group')
         project_id = request.GET.get('project')
         print("Group : " + str(group_id) + " ," + " Projects: "+ str(project_id))
-        if form.is_valid() and group_id == 'None' and project_id == 'None':
+        if form.is_valid() and group_id == None and project_id == None:
             #new comment creation
-            new_comment = models.Comment(comment=form.cleaned_data['comment'])
+            new_comment = models.Comment(comment=form.cleaned_data['comment'], owner=request.user)
             new_comment.save()
 
             #comments list
@@ -40,13 +40,13 @@ def addComment(request):
             return render(request, 'commentForm.html', context)
         elif form.is_valid() and project_id == None:
             currGroup = Group.objects.get(id=group_id)
-            new_comment = models.Comment(comment=form.cleaned_data['comment'], group_id=currGroup)
+            new_comment = models.Comment(comment=form.cleaned_data['comment'], group_id=currGroup,owner=request.user)
             new_comment.save()
 
             return HttpResponseRedirect('group?name='+currGroup.name)
         elif form.is_valid() and group_id == None:
             currProj = Project.objects.get(id=project_id)
-            new_comment = models.Comment(comment=form.cleaned_data['comment'], project_id=currProj)
+            new_comment = models.Comment(comment=form.cleaned_data['comment'], project_id=currProj,owner=request.user)
             new_comment.save()
 
             return HttpResponseRedirect('project?name=' + currProj.name)
@@ -63,11 +63,11 @@ def addSubComment(request):
         group_id = request.GET.get('group')
         project_id = request.GET.get('project')
         print("Group : " + str(group_id) + " ," + " Projects: " + str(project_id) + ", id: " + str(comment_id))
-        if form.is_valid() and group_id == 'None' and project_id == 'None':
+        if form.is_valid() and group_id == None and project_id == None:
             comment = Comment.objects.get(id=comment_id)
 
             #creating the subcomment
-            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'])
+            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'], owner=request.user)
             new_sub_comment.save()
 
             #adding the sub comment to the comment
@@ -85,7 +85,7 @@ def addSubComment(request):
 
             currGroup = Group.objects.get(id=group_id)
             # creating the subcomment
-            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'])
+            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'], owner=request.user)
             new_sub_comment.save()
 
             # adding the sub comment to the comment
@@ -98,7 +98,7 @@ def addSubComment(request):
 
             currProj = Project.objects.get(id=project_id)
             # creating the subcomment
-            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'])
+            new_sub_comment = models.Sub_Comment(data=form.cleaned_data['comment'], owner=request.user)
             new_sub_comment.save()
 
             # adding the sub comment to the comment
