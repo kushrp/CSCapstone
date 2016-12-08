@@ -138,12 +138,16 @@ def profile_edit(request):
         if form.is_valid():
           resume = form.cleaned_data['resume']
           experience = form.cleaned_data['experience']
-          company = Company.objects.get(id=form.cleaned_data['company'])
           photo = form.cleaned_data['photo']
           contact = form.cleaned_data['contact']
           almamater = form.cleaned_data['almamater']
           bio = form.cleaned_data['bio']
           e = Engineer.objects.get(engID=request.user)
+          company = Company.objects.get(id=form.cleaned_data['company'])
+          if e.company is not None:
+              prev_comp = e.company
+              prev_comp.members.remove(current_user)
+          company.members.add(current_user)
           e.company = company
           e.resume = resume
           e.experience = experience
