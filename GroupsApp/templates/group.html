@@ -56,12 +56,21 @@
 
                                    <td><a href="/home?id={{ item.owner.id }}"><b>{{ item.owner.first_name }} {{ item.owner.last_name }}</b></a><br/><h6>{{ item.time }}</h6></td>
                                    <td>
-                                       <h3>{{ item.comment }}</h3> <a style="float:right; color:red;" href="/delcomment?group={{ group.id }}&id={{ item.id }}">&#10007;</a>
+                                       {% if item.owner.id == user.id %}
+                                       <a style="float:right; color:red;" href="/delcomment?group={{ group.id }}&id={{ item.id }}">&#10007;</a>
+                                       {% endif %}
+                                       <br/>
+                                       <h3>{{ item.comment }}</h3>
+
                                         <hr/>
                                        {% for sub_com in item.subs.all %}
                                             <p><a href="/home?id={{ sub_com.owner.id }}"><b>{{ sub_com.owner.first_name }} {{ sub_com.owner.last_name }}</b></a><br/><h6>{{ sub_com.time }}</h6></p>
+                                            {% if sub_com.owner.id == user.id %}
+                                                <a style="float:right" href="/delsubcomment?group={{ group.id }}&id={{ sub_com.id }}">&#10007;</a>
+                                            {% endif %}
+                                           <br/>
+                                           <p>{{ sub_com.data }} </p>
 
-                                           <p>{{ sub_com.data }} <a style="float:right" href="/delsubcomment?group={{ group.id }}&id={{ sub_com.id }}">&#10007;</a></p>
                                            <hr/>
                                        {% endfor %}
 
