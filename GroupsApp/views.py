@@ -6,10 +6,12 @@ from django.http import HttpResponseRedirect
 from . import models
 from . import forms
 from CommentsApp.forms import CommentForm
+from django.contrib import messages
 from CommentsApp.models import Comment,Sub_Comment
 from ProjectsApp.models import Project
 from GroupsApp.models import Group
 from AuthenticationApp.models import Student
+from UniversitiesApp.models import University
 
 def getGroups(request):
     if request.user.is_authenticated():
@@ -85,9 +87,15 @@ def addMember(request):
 
 def getGroupForm(request):
     if request.user.is_authenticated():
-        return render(request, 'groupform.html', {
-          'form': forms.GroupForm(),
-        })
+        in_university = request.GET.get('name', 'None')
+        if in_university == 'None':
+            messages.warning(request, 'Please update your profile.')
+            return HttpResponseRedirect('/home')
+        else:
+            in_university = University.objects.get(name__exact=in_university)
+            return render(request, 'groupform.html', {
+              'form': forms.GroupForm(),
+            })
     # render error page if user is not logged in
     return render(request, 'autherror.html')
 

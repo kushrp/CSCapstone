@@ -82,12 +82,20 @@ def joinUniversity(request):
     in_university = models.University.objects.get(name__exact=in_name)
     in_university.members.add(request.user)
     in_university.save()
-    curteach = Teacher.objects.get(teacher=request.user.id)
-    prev_uni = curteach.university
-    if prev_uni is not None:
-      prev_uni.members.remove(request.user)
-    curteach.university = in_university
-    curteach.save()
+    if request.user.is_professor:
+      curteach = Teacher.objects.get(teacher=request.user.id)
+      prev_uni = curteach.university
+      if prev_uni is not None:
+        prev_uni.members.remove(request.user)
+      curteach.university = in_university
+      curteach.save()
+    else:
+      curteach = Student.objects.get(user=request.user.id)
+      prev_uni = curteach.university
+      if prev_uni is not None:
+        prev_uni.members.remove(request.user)
+      curteach.university = in_university
+      curteach.save()
     context = {
       'university': in_university,
       'userIsMember': True,
@@ -102,12 +110,20 @@ def unjoinUniversity(request):
     in_university = models.University.objects.get(name__exact=in_name)
     in_university.members.remove(request.user)
     in_university.save()
-    curteach = Teacher.objects.get(teacher=request.user.id)
-    prev_uni = curteach.university
-    if prev_uni is not None:
-      prev_uni.members.remove(request.user)
-    curteach.university = None
-    curteach.save()
+    if request.user.is_professor:
+      curteach = Teacher.objects.get(teacher=request.user.id)
+      prev_uni = curteach.university
+      if prev_uni is not None:
+        prev_uni.members.remove(request.user)
+      curteach.university = None
+      curteach.save()
+    else:
+      curteach = Student.objects.get(user=request.user.id)
+      prev_uni = curteach.university
+      if prev_uni is not None:
+        prev_uni.members.remove(request.user)
+      curteach.university = None
+      curteach.save()
     context = {
       'university': in_university,
       'userIsMember': False,

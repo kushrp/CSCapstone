@@ -21,7 +21,15 @@
             {% if user.is_professor == True %}
                 {% if id != None %}
                     {% if id.university == university %}
-			<a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+			            <a href="/university/course/remove?name={{ university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
+                        <div class="panel panel-default" style="float: left">
+                            <form method="post" action="university/course/join?id={{ group.id }}" class="panel-body validate"> {% csrf_token %}
+{#                          {{ member_form.as_p }}#}
+                            <input type="text" placeholder="Student Email" id="email" name="email" class="form-control" data-bvalidator="required" data-bvalidator-msg="Email Required">
+                            <br>
+                            <button type="submit" class='btn btn-primary'>Add Member</button>
+                            </form>
+                        </div>
                     {% endif %}
                 {% endif %}
             {% endif %}
