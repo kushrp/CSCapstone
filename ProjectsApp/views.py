@@ -40,10 +40,14 @@ def getProject(request):
   if request.user.is_authenticated():
     in_name = request.GET.get('name', 'None')
     project = models.Project.objects.get(name__exact=in_name)
+    bookmark_list = models.Bookmark.objects.all().filter(usr=request.user.id,project=project)
+    isbookmarked = 0
+    if len(bookmark_list) > 0:
+      isbookmarked = 1
     context = {
       'project': project,
       'currentuser': request.user,
-
+      'isbookmarked':isbookmarked
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
@@ -172,10 +176,8 @@ def removeBookmark(request):
     #   'project': request.GET.get('id')
     # }
     current_project = Project.objects.all().get(id=request.GET.get('id'))
-    print(current_project.id)
     current_user = request.user
-    bookmark_new = models.Bookmark(project=current_project, usr=current_user)
-    bookmark_new.save()
-
+    bookmark = models.Bookmark.objects.get(project=current_project, usr=current_user);
+    bookmark.delete()
     return HttpResponseRedirect('/project?name=' + current_project.name)
   return render(request, 'autherror.html')
