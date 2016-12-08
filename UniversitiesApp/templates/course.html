@@ -35,7 +35,7 @@
                 {% if teacher != None %}
                     {% if teacher.university == course.university %}
                         <a href="/university/course/remove?name={{ course.university.name }}&course={{ course.tag }}" class="btn btn-default">Delete this Course</a>
-                        <form style="float: right;" method="post" enctype="multipart/form-data" action="" class="panel-body validate">
+                        <form style="float: right;" method="post" enctype="multipart/form-data" action="course/addmember?id={{ course.id }}" class="panel-body validate">
                             {% csrf_token %}
                             {{ studentform.as_p }}
                             <input type="submit" value="Add Member" class="btn btn-primary">
@@ -65,7 +65,7 @@
 						<td>{{ item.get_full_name }}</td>
                         {% if user.is_professor == True %}
                             {% if course.teacher.teacher == user %}
-                                <td><a href="/university/course/unjoin?name={{ university.name }}&course={{ course.tag }}&id={{ item.id }}">Remove student</a></td>
+                                <td><a href="course/removemember?cid={{ course.id }}&id={{ item.id }}">Remove student</a></td>
                             {% endif %}
                         {% endif %}
 					</tr>
