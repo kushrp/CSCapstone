@@ -12,8 +12,9 @@ from AuthenticationApp.models import Engineer
 from datetime import datetime
 from GroupsApp.models import Group
 from ProjectsApp.models import Project
-
+from CommentsApp.models import Comment
 from django.http import HttpResponseRedirect
+from CommentsApp.forms import CommentForm
 
 
 def getProjects(request):
@@ -40,9 +41,12 @@ def getProject(request):
   if request.user.is_authenticated():
     in_name = request.GET.get('name', 'None')
     project = models.Project.objects.get(name__exact=in_name)
+    comments_list = Comment.objects.filter(project_id=project.id)
     context = {
       'project': project,
       'currentuser': request.user,
+      'comments_list': comments_list,
+      'comment_form': CommentForm(),
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in

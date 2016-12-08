@@ -64,7 +64,7 @@
                                        {% endfor %}
 
                                        <br/>
-                                       <form method="post" enctype="multipart/form-data" action="/addSubcomment?id={{ item.id }}&group={{ group.name }}" class="panel-body validate">
+                                       <form method="post" enctype="multipart/form-data" action="/addSubcomment?id={{ item.id }}&group={{ group.id }}" class="panel-body validate">
                                            {% csrf_token %}
                                              {{ comment_form.as_p }}
                                              <input type="submit" value="Post" class="btn btn-sm btn-danger">
@@ -78,7 +78,7 @@
 
 
                     <div class="panel panel-default">
-                        <form method="post" enctype="multipart/form-data" action="/addcomment?group={{ group.name }}&id={{ group.id }}" class="panel-body validate">
+                        <form method="post" enctype="multipart/form-data" action="/addcomment?group={{ group.id }}" class="panel-body validate">
                         {% csrf_token %}
                                 {{ comment_form.as_p }}
                              <input type="submit" value="Submit" class="btn btn-primary">
