@@ -21,7 +21,7 @@
                     <a class="btn btn-primary" style="float: right" href="/group/all">Show All Groups</a>
                 {% elif user.is_engineer %}
                     <a class="btn btn-primary" style="float: right" href="/update_profile">Edit Account Info</a>
-                    <a class="btn btn-primary" style="float: right" href="/project/form">Create Project</a>
+                    <a class="btn btn-primary" style="float: right" href="/project/form?name={{ profile.company }}">Create Project</a>
                     <a class="btn btn-primary" style="float: right" href="">Show My Projects</a>
                     <a class="btn btn-primary" style="float: right" href="/project/all">Show All Projects</a>
                 {% endif %}
