@@ -7,7 +7,18 @@
 		<div class="jumbotron">
 			<h1>{{ project.name }}</h1>
             <h3><i>{{ project.company.name }}</i></h3>
-			<p>{{ project.description|safe }}</p>
+            {% if currentuser.is_engineer %}
+                <div id="editDesc" class="ui-content" style="min-width:250px;">
+                    <form method="post" action="/project/editProject?proj={{ project.id }}" class="panel-body validate">
+                        {% csrf_token %}
+                        <textarea id="description" name="description">{{ project.description }}</textarea>
+                        <br>
+                        <input class="btn btn-success" type="submit" id="submit" value="Update Description">
+                    </form>
+                </div>
+            {% else %}
+                <p>{{ project.description|safe }}</p>
+            {% endif %}
             <!--
             {% if userIsMember %}
             <a href="/university/unjoin?name={{ university.name }}" class="btn btn-default">Unjoin this University</a>
@@ -34,6 +45,10 @@
                 {% else %}
                     <a href="project/takeProject?proj={{ project.id }}" class="btn btn-primary" style="float: right">Take Up The Project</a>
                 {% endif %}
+            {% endif %}
+            {% if currentuser.is_engineer %}
+                <a href="project/deleteProject?proj={{ project.id }}" class="btn btn-danger" style="float: right">Delete Project</a>
+{#                <a href="project/editProject?proj={{ project.id }}" class="btn btn-success" style="float: right">Edit Description</a>#}
             {% endif %}
         {% if project.taken == True %}
             <p>Assigned to: <i><b>{{ project.taken_by }}</b></i></p>

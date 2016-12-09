@@ -19,4 +19,6 @@ urlpatterns = [
     url(r'^project/ditchProject$', views.ditchProject, name="ditchProject"),
     url(r'^project/takeProject$', views.takeProject, name="takeProject"),
     url(r'^project/updateprogress$', views.updateProgress, name="Update Progress"),
+    url(r'^project/deleteProject$', views.deleteProject, name="Delete Project"),
+    url(r'^project/editProject$', views.editProject, name="Edit Project"),
 ]

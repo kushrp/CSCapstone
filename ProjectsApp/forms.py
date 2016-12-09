@@ -12,3 +12,6 @@ class ProjectForm(forms.Form):
 
 class updateStatus(forms.Form):
   status = forms.IntegerField(label="status", min_value=0, max_value=100)
+
+class updateDescription(forms.Form):
+  description = forms.CharField(label="Description", max_length=10000)

@@ -168,10 +168,6 @@ def getBookmarks(request):
 
 def addBookmark(request):
   if request.user.is_authenticated():
-    # context = {
-    #   'user':request.user,
-    #   'project': request.GET.get('id')
-    # }
     current_project = Project.objects.all().get(id=request.GET.get('id'))
     print(current_project.id)
     current_user = request.user
@@ -183,10 +179,6 @@ def addBookmark(request):
 
 def removeBookmark(request):
   if request.user.is_authenticated():
-    # context = {
-    #   'user':request.user,
-    #   'project': request.GET.get('id')
-    # }
     current_project = Project.objects.all().get(id=request.GET.get('id'))
     current_user = request.user
     bookmark = models.Bookmark.objects.get(project=current_project, usr=current_user);
@@ -198,10 +190,25 @@ def updateProgress(request):
   if request.user.is_authenticated():
     form = forms.updateStatus(request.POST)
     if request.method == 'POST' and form.is_valid():
-      print(form)
       project = Project.objects.get(id=request.GET.get('id'))
-      print(project.status)
       project.status = form.data.get('status')
+      project.save()
+      return HttpResponseRedirect('/project?name=' + project.name)
+  return render(request, 'autherror.html')
+
+def deleteProject(request):
+  if request.user.is_authenticated():
+    current_project = Project.objects.all().get(id=request.GET.get('proj'))
+    current_project.delete()
+    return HttpResponseRedirect('/home')
+  return render(request, 'autherror.html')
+
+def editProject(request):
+  if request.user.is_authenticated():
+    form = forms.updateDescription(request.POST)
+    if request.method == 'POST' and form.is_valid():
+      project = Project.objects.get(id=request.GET.get('proj'))
+      project.description = form.data.get('description')
       project.save()
       return HttpResponseRedirect('/project?name=' + project.name)
   return render(request, 'autherror.html')
