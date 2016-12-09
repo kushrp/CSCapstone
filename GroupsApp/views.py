@@ -10,7 +10,7 @@ from django.contrib import messages
 from CommentsApp.models import Comment,Sub_Comment
 from ProjectsApp.models import Project
 from GroupsApp.models import Group
-from AuthenticationApp.models import Student
+from AuthenticationApp.models import Student, MyUser
 from UniversitiesApp.models import University
 
 def getGroups(request):
@@ -64,7 +64,7 @@ def addMember(request):
                 email = form.cleaned_data['email']
                 group_id = request.GET.get('id')
                 myuser = models.MyUser.objects.get(email=email)
-                group = models.Group.objects.get(i=group_id)
+                group = models.Group.objects.get(id=group_id)
                 group.members.add(myuser)
                 is_member = group.members.filter(email__exact=request.user.email)
                 comments_list = Comment.objects.filter(group_id=group.id)
@@ -175,10 +175,13 @@ def matching_algorithm(group_id):
     average_experience = 0
 
     in_group = Group.objects.get(id=group_id)
-    total_number_students = len(in_group.members.all())
+    total_number_students = len(list(in_group.members.all()))
     print("Total number of students " + str(total_number_students))
 
     for member in in_group.members.all():
+      if len(list(Student.objects.filter(user=member))) == 0:
+          continue
+
       s = Student.objects.get(user=member)
       skills_list = s.skills.split(",")
       average_experience += s.experience
@@ -203,6 +206,7 @@ def matching_algorithm(group_id):
       print("Languages required " + str(language_reqs))
       print("Experience required " + str(project.years))
       print("Speciality of the group " + str(in_group.speciality) + " vs what is needed " + project.speciality)
+
       if skill_match >= len(language_reqs) and average_experience >= project.years and in_group.speciality == project.speciality:
         ret.append(project)
     print("Matched projects : " + str(ret))

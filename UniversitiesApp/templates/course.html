@@ -62,7 +62,7 @@
 				<tbody>
 					{% for item in course.members.all %}
 					<tr>
-						<td>{{ item.get_full_name }}</td>
+						<td><a href="/home?id={{ item.id }}">{{ item.get_full_name }}</a></td>
                         {% if user.is_professor == True %}
                             {% if course.teacher.teacher == user %}
                                 <td><a href="course/removemember?cid={{ course.id }}&id={{ item.id }}">Remove student</a></td>

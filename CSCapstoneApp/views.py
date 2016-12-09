@@ -33,9 +33,9 @@ def getForm(request):
 def getHome(request):
     a = None
     type = None
-    profiler_id = request.GET.get('id', 'None')
+    profiler_id = request.GET.get('id')
 
-    if profiler_id == 'None':
+    if profiler_id == None:
       class_list = []
       course_list = []
       project_list = []
@@ -78,24 +78,24 @@ def getHome(request):
       groups_list = []
 
       myuser = MyUser.objects.get(id=profiler_id)
-      if request.user.is_professor == True:
+      if myuser.is_professor == True:
         type = "Teacher"
         a = Teacher.objects.filter(teacher=myuser)[0]
         class_list = list(Course.objects.filter(teacher=a))
-      elif request.user.is_student == True:
+      elif myuser.is_student == True:
         type = "Student"
         a = Student.objects.get(user_id=myuser)
-        for course in Course.objects.all():
-          if request.user in course.members.all():
+        for course in list(Course.objects.all()):
+          if myuser in list(course.members.all()):
             course_list.append(course)
-        for group in Group.objects.all():
-          if request.user in group.members.all():
+        for group in list(Group.objects.all()):
+          if myuser in list(group.members.all()):
             groups_list.append(group)
-      elif request.user.is_engineer == True:
+      elif myuser.is_engineer == True:
         type = "Engineer"
         a = Engineer.objects.get(engID=myuser)
-        for project in Project.objects.all():
-          if request.user.id == project.engID:
+        for project in list(Project.objects.all()):
+          if myuser.id == project.engID:
             project_list.append(project)
 
       return render(request, 'home.html', {
@@ -124,7 +124,7 @@ def profile_edit(request):
             department = form.cleaned_data['department']
             contact = form.cleaned_data['contact']
             almamater = form.cleaned_data['almamater']
-            pic = request.FILES['photo']
+            # pic = request.FILES['photo']
             t = Teacher.objects.get(teacher=request.user)
             if t.university is not None:
                 prev_uni = t.university
@@ -133,7 +133,7 @@ def profile_edit(request):
             t.university = university
             t.department = department
             t.contact = contact
-            t.pic = pic
+            # t.pic = pic
             t.almamater = almamater
             t.save()
             messages.success(request, 'Success, your profile was saved!')
@@ -158,10 +158,10 @@ def profile_edit(request):
           university = University.objects.get(id=university_id)
           major = form.cleaned_data['major']
           skills = form.cleaned_data['skills']
-          resume = form.data['resume']
+          # resume = form.data['resume']
           experience = form.cleaned_data['experience']
           year = form.cleaned_data['year']
-          pic = request.FILES['photo']
+          # pic = request.FILES['photo']
           s = Student.objects.get(user=request.user)
           if s.university is not None:
               prev_uni = s.university
@@ -169,8 +169,8 @@ def profile_edit(request):
           university.members.add(current_user)
           s.major = major
           s.skills = skills
-          s.resume = resume
-          s.pic = pic
+          # s.resume = resume
+          # s.pic = pic
           s.experience = experience
           s.university = university
           s.year = year
@@ -194,7 +194,7 @@ def profile_edit(request):
       if request.method == 'POST':
         form = EngineerForm(request.POST or None)
         if form.is_valid():
-          resume = form.cleaned_data['resume']
+          # resume = form.cleaned_data['resume']
           experience = form.cleaned_data['experience']
           photo = form.cleaned_data['photo']
           contact = form.cleaned_data['contact']
@@ -207,9 +207,9 @@ def profile_edit(request):
               prev_comp.members.remove(current_user)
           company.members.add(current_user)
           e.company = company
-          e.resume = resume
+          # e.resume = resume
           e.experience = experience
-          e.photo = photo
+          # e.photo = photo
           e.contact = contact
           e.bio = bio
           e.almamater = almamater

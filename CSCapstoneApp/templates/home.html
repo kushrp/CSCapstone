@@ -33,8 +33,9 @@
             <div class="row">
                 <div class="col-xs-4">
                     {% if user.is_professor %}
-                        <h2>{{ profile.university }}</h2>
+                        <h2><a href="/university?name={{ profile.university.name }}">{{ profile.university }}</a></h2>
                         <i>{{ profile.university.description|safe }}</i>
+                        <h2 style="text-align: center"><img src="/{{ profile.university.photo }}" alt="University Image" width=150/></h2>
                     {% elif user.is_student %}
                         <h2><b><u>Courses</u></b></h2>
                         <table class="table table-striped sortable" style="text-align: left">
@@ -47,7 +48,7 @@
                             <tbody>
                                 {% for course in courses %}
                                 <tr>
-                                    <td><a href="">{{ course.name }}</a></td>
+                                    <td><a href="/university/course?course={{ course.id }}">{{ course.name }}</a></td>
                                     <td>{{ course.description |safe }}</td>
                                 </tr>
                                 {% endfor %}
@@ -101,8 +102,7 @@
                             <tbody>
                                 {% for class in classes %}
                                 <tr>
-                                    <td><a href="university/course?id={{ class.id }}">{{ class.name }}</a></td>
-                                    <td><a href="/university/course?name={{ class.university.name }}&course={{ class.tag }}">{{ class.name }}</a></td>
+                                    <td><a href="university/course?course={{ class.id }}">{{ class.tag }}</a></td>
                                     <td>{{ class.description |safe }}</td>
 
                                 </tr>

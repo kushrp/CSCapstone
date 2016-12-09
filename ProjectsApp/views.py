@@ -46,6 +46,7 @@ def getProject(request):
     if len(bookmark_list) > 0:
       isbookmarked = 1
     comments_list = Comment.objects.filter(project_id=project.id)
+
     context = {
       'project': project,
       'currentuser': request.user,
@@ -53,6 +54,7 @@ def getProject(request):
       'comment_form': CommentForm(),
       'isbookmarked':isbookmarked,
       'user': request.user,
+      'groups_form': forms.groupSelect(user=request.user),
     }
     return render(request, 'project.html', context)
   # render error page if user is not logged in
@@ -106,56 +108,6 @@ def getProjectFormSuccess(request):
   # render error page if user is not logged in
   return render(request, 'autherror.html')
 
-
-def takeProject(request):
-  if request.user.is_authenticated():
-    project_id = request.GET.get('proj')
-    in_group = None
-    for group in Group.objects.all():
-      if request.user in group.members.all():
-        in_group = group
-        break
-    in_project = Project.objects.get(id=project_id)
-    if in_group.assigned == False and in_project.taken == False:
-      in_group.assigned = True
-      in_project.taken_by = in_group
-      in_project.taken = True
-
-      in_project.save()
-      in_group.save()
-    else:
-      messages.warning(request, 'Either the project is taken or your group is in the assigned state.')
-    return HttpResponseRedirect('/project?name='+in_project.name)
-  # render error page if user is not logged in
-  return render(request, 'autherror.html')
-
-
-
-def ditchProject(request):
-    if request.user.is_authenticated():
-      in_group = None
-      for group in Group.objects.all():
-        if request.user in group.members.all():
-          in_group = group
-          break
-
-      project_id = request.GET.get('proj')
-      in_project = Project.objects.get(id=project_id)
-
-      if in_group.assigned == True and in_project.taken == True:
-        in_group.assigned = False
-        in_project.taken_by = None
-        in_project.taken = False
-
-        in_project.save()
-        in_group.save()
-      else:
-        messages.warning(request, 'Either the project is not taken or your group is not in the assigned state.')
-      return HttpResponseRedirect('/project?name=' + in_project.name)
-    # render error page if user is not logged in
-    return render(request, 'autherror.html')
-
-
 def getBookmarks(request):
   if request.user.is_authenticated():
     in_user_id = request.user.id
@@ -204,4 +156,48 @@ def updateProgress(request):
       project.status = form.data.get('status')
       project.save()
       return HttpResponseRedirect('/project?name=' + project.name)
+  return render(request, 'autherror.html')
+
+
+def takeProject(request):
+  if request.user.is_authenticated():
+    if request.method == 'POST':
+      in_project = Project.objects.get(id=request.GET.get('proj'))
+      form = forms.groupSelect(request.POST, user=request.user)
+      print("Form valid hai ?? : " + str(form.is_valid() == True) +" "+ str(form.errors))
+      if form.is_valid():
+        # print("form.data cleaned data " + str(form.cleaned_data['group_ch']))
+        # print("form.data data " + str(form.data.get('group_ch')))
+        in_group = Group.objects.get(id=form.cleaned_data['groups'])
+
+        if in_group.assigned == False and in_project.taken == False:
+          in_group.assigned = True
+          in_project.taken_by = in_group
+          in_project.taken = True
+
+          in_project.save()
+          in_group.save()
+        else:
+          messages.warning(request, 'Either the project is taken or your group is in the assigned state.')
+        return HttpResponseRedirect('/project?name='+in_project.name)
+    return HttpResponseRedirect('/project?name=' + in_project.name)
+  # render error page if user is not logged in
+  return render(request, 'autherror.html')
+
+
+def ditchProject(request):
+  if request.user.is_authenticated():
+      in_project = Project.objects.get(id=request.GET.get('proj'))
+      in_group = in_project.taken_by
+      if in_group.assigned == True and in_project.taken == True:
+        in_group.assigned = False
+        in_project.taken_by = None
+        in_project.taken = False
+
+        in_project.save()
+        in_group.save()
+      else:
+        messages.warning(request, 'Either the project is not taken or your group is not in the assigned state.')
+      return HttpResponseRedirect('/project?name=' + in_project.name)
+  # render error page if user is not logged in
   return render(request, 'autherror.html')

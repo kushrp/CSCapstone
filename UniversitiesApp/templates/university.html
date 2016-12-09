@@ -19,20 +19,44 @@
     </div>
     <div class="container" role="main">
 		<div class="table-responsive">
-			<table class="table table-striped sortable">
-				<thead>
-					<tr>
-						<th>Users</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for item in university.members.all %}
-					<tr>
-						<td>{{ item.get_full_name }}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+            <div class="row">
+                <div class="col-xs-6">
+                    <table class="table table-striped sortable">
+                        <thead>
+                            <tr>
+                                <th>Students</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in university.members.all %}
+                            <tr>
+                                {% if item.is_student %}
+                                    <td><a href="/home?id={{ item.id }}">{{ item.get_full_name }}</a></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-6">
+                    <table class="table table-striped sortable">
+                        <thead>
+                            <tr>
+                                <th>Professors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in university.members.all %}
+                            <tr>
+                                {% if item.is_professor %}
+                                    <td><a href="/home?id={{ item.id }}">{{ item.get_full_name }}</a></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped sortable">
@@ -46,8 +70,8 @@
 				<tbody>
 					{% for item in university.course_set.all %}
 					<tr>
-						<td><a href="/university/course?name={{ university.name }}&course={{ item.tag }}">{{ item.tag }}</a></td>
-						<td><a href="/university/course?name={{ university.name }}&course={{ item.name }}">{{ item.name }}</a></td>
+						<td><a href="/university/course?course={{ item.id }}">{{ item.tag }}</a></td>
+						<td><a href="/university/course?course={{ item.id }}">{{ item.name }}</a></td>
 						<td>{{ item.description |safe }}</td>
 					</tr>
 					{% endfor %}
