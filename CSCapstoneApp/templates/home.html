@@ -101,8 +101,8 @@
                             <tbody>
                                 {% for class in classes %}
                                 <tr>
-
                                     <td><a href="university/course?id={{ class.id }}">{{ class.name }}</a></td>
+                                    <td><a href="/university/course?name={{ class.university.name }}&course={{ class.tag }}">{{ class.name }}</a></td>
                                     <td>{{ class.description |safe }}</td>
 
                                 </tr>
