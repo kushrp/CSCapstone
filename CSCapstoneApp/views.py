@@ -117,31 +117,41 @@ def profile_edit(request):
         if request.method == 'POST':
           form = TeacherForm(request.POST, request.FILES)
           if form.is_valid():
-            print(form.cleaned_data['university'])
+            print(form.cleaned_data)
+            t = Teacher.objects.get(teacher=request.user)
             # print(form)
+
             university_id = form.cleaned_data['university']
             university = University.objects.get(id=university_id)
-            department = form.cleaned_data['department']
-            contact = form.cleaned_data['contact']
-            almamater = form.cleaned_data['almamater']
-            # pic = request.FILES['photo']
-            t = Teacher.objects.get(teacher=request.user)
-            if t.university is not None:
-                prev_uni = t.university
-                prev_uni.members.remove(current_user)
-            university.members.add(current_user)
             t.university = university
-            t.department = department
-            t.contact = contact
+            if t.university is not None:
+              prev_uni = t.university
+              prev_uni.members.remove(current_user)
+            university.members.add(current_user)
+
+
+
+            if form.cleaned_data['department'] != '':
+              department = form.cleaned_data['department']
+              t.department = department
+
+            if form.cleaned_data['contact'] != None:
+              contact = form.cleaned_data['contact']
+              t.contact = contact
+
+            if form.cleaned_data['almamater'] != '':
+              almamater = form.cleaned_data['almamater']
+              t.almamater = almamater
+            # pic = request.FILES['photo']
+
+
+
+
+
             # t.pic = pic
-            t.almamater = almamater
             t.save()
             messages.success(request, 'Success, your profile was saved!')
-            return render(request, 'home.html', {
-              'profile': t,
-              'user': request.user,
-              'type': 'Teacher',
-            })
+            return HttpResponseRedirect('/home')
         context = {
           "form": TeacherForm(),
           "page_name": "Update Your Profile Info",
@@ -154,34 +164,46 @@ def profile_edit(request):
       if request.method == 'POST':
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
+          s = Student.objects.get(user=request.user)
+          print(form.cleaned_data)
           university_id = form.data['university']
           university = University.objects.get(id=university_id)
-          major = form.cleaned_data['major']
-          skills = form.cleaned_data['skills']
-          # resume = form.data['resume']
-          experience = form.cleaned_data['experience']
-          year = form.cleaned_data['year']
-          # pic = request.FILES['photo']
-          s = Student.objects.get(user=request.user)
           if s.university is not None:
-              prev_uni = s.university
-              prev_uni.members.remove(current_user)
+            prev_uni = s.university
+            prev_uni.members.remove(current_user)
           university.members.add(current_user)
-          s.major = major
-          s.skills = skills
+          s.university = university
+
+          if form.data['major'] != '':
+            major = form.cleaned_data['major']
+            s.major = major
+
+          if form.data['skills'] != '':
+            skills = form.cleaned_data['skills']
+            s.skills = skills
+
+          # resume = form.data['resume']
+          if form.cleaned_data['experience'] != None:
+            experience = form.cleaned_data['experience']
+            s.experience = experience
+
+          if form.cleaned_data['year'] != None:
+            year = form.cleaned_data['year']
+            s.year = year
+
+          # pic = request.FILES['photo']
+
+
+
           # s.resume = resume
           # s.pic = pic
-          s.experience = experience
-          s.university = university
-          s.year = year
+
+
+
           s.save()
 
           messages.success(request, 'Success, your profile was saved!')
-          return render(request, 'home.html', {
-            'profile': s,
-            'user': request.user,
-            'type': 'Student',
-          })
+          return HttpResponseRedirect('/home')
       context = {
         "form": StudentForm(),
         "page_name": "Update Your Profile Info",
@@ -194,33 +216,47 @@ def profile_edit(request):
       if request.method == 'POST':
         form = EngineerForm(request.POST or None)
         if form.is_valid():
+          print(form.cleaned_data)
           # resume = form.cleaned_data['resume']
-          experience = form.cleaned_data['experience']
-          photo = form.cleaned_data['photo']
-          contact = form.cleaned_data['contact']
-          almamater = form.cleaned_data['almamater']
-          bio = form.cleaned_data['bio']
           e = Engineer.objects.get(engID=request.user)
+
+          if form.cleaned_data['experience'] != None:
+            experience = form.cleaned_data['experience']
+            e.experience = experience
+
+          if form.cleaned_data['photo'] != None:
+            photo = form.cleaned_data['photo']
+
+          if form.cleaned_data['contact'] != None:
+            contact = form.cleaned_data['contact']
+            e.contact = contact
+
+          if form.cleaned_data['almamater'] != '':
+            almamater = form.cleaned_data['almamater']
+            e.almamater = almamater
+
+          if form.cleaned_data['bio'] != '':
+            bio = form.cleaned_data['bio']
+            e.bio = bio
+
+
           company = Company.objects.get(id=form.cleaned_data['company'])
           if e.company is not None:
               prev_comp = e.company
               prev_comp.members.remove(current_user)
           company.members.add(current_user)
           e.company = company
+
           # e.resume = resume
-          e.experience = experience
+
           # e.photo = photo
-          e.contact = contact
-          e.bio = bio
-          e.almamater = almamater
+
+
+
           e.save()
 
           messages.success(request, 'Success, your profile was saved!')
-          return render(request, 'home.html', {
-            'profile': e,
-            'user': request.user,
-            'type': 'Engineer',
-          })
+          return HttpResponseRedirect('/home')
       context = {
         "form": EngineerForm(),
         "page_name": "Update Your Profile Info",

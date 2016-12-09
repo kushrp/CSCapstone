@@ -56,7 +56,7 @@
                             </tbody>
                         </table>
                     {% elif user.is_engineer %}
-                        <h2>{{ profile.company}}</h2>
+                        <h2><a href="/company?name={{ profile.company.name }}">{{ profile.company}}</a></h2>
                         <i>{{ profile.company.description|safe }}</i>
                     {% endif %}
                 </div>
@@ -76,6 +76,7 @@
                             <p><b>Skills:</b> {{ profile.skills }}</p>
                             <p><b>Major:</b> {{ profile.major }}</p>
                             <p><b>Email:</b> {{ user.email }}</p>
+                            <p><b>Year:</b> {{ profile.year }}</p>
                             <p><b>Experience:</b>{{ profile.experience }}</p>
                         </div>
                     {% elif user.is_engineer %}
@@ -142,7 +143,7 @@
                             <tbody>
                                 {% for project in projects %}
                                 <tr>
-                                    <td><a href="">{{ project.name }}</a></td>
+                                    <td><a href="/project?name={{ project.name }}">{{ project.name }}</a></td>
                                     <td>{{ project.description |safe }}</td>
                                 </tr>
                                 {% endfor %}

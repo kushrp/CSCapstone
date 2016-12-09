@@ -1,0 +1,38 @@
+{% extends "body.html" %}
+
+{% block content %}
+
+	<!-- Content -->
+	<div class="container" role="main">
+		<div class="jumbotron">
+			<h3 style="margin: 0px; padding: 0px;">Edit Project</h3>
+		</div>
+		<div class="panel panel-default">
+			<form method="post" action="formupdatesuccess?id={{ id }}" class="panel-body validate">
+				{% csrf_token %}
+{#				{{ form.as_p }}#}
+                <label for="name">Name</label>
+                <h6 style="color:red">{{ error }}</h6>
+				<input type="text" name="name" id="name" placeholder="Name" class="form-control" data-bvalidator="required" data-bvalidator-msg="Name Required">
+				<br>
+				<label for="description">Project Description</label>
+				<textarea type="text" name="description" id="description" placeholder="Description" class="form-control" data-bvalidator="required" data-bvalidator-msg="Description Required"></textarea>
+				<br>
+                <label for="languages">Programming Languages</label>
+				<input type="text" name="languages" id="languages" placeholder="Programming Languages" class="form-control">
+				<br>
+                <label for="speciality">Speciality</label>
+				<input type="text" name="speciality" id="speciality" placeholder="Speciality" class="form-control">
+				<br>
+                <label for="years">Years of Experience</label>
+				<input type="number" name="years" id="years" placeholder="Number of Years" class="form-control" min="0">
+                <br>
+                <label for="updated_at">Updated At</label>
+                <input type="date" name="updated_at" id="updated_at" class="form-control">
+                <br>
+				<input type="submit" value="Submit" class="btn btn-primary">
+			</form>
+		</div>
+	</div>
+	
+{% endblock %}

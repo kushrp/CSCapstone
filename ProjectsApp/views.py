@@ -46,7 +46,7 @@ def getProject(request):
     if len(bookmark_list) > 0:
       isbookmarked = 1
     comments_list = Comment.objects.filter(project_id=project.id)
-
+    print(str(request.user.id) + " vs " + str(project.engID.engID.id))
     context = {
       'project': project,
       'currentuser': request.user,
@@ -104,6 +104,42 @@ def getProjectFormSuccess(request):
         return render(request, 'projectformsuccess.html', context)
     return render(request, 'projectform.html',{
       'form': forms.ProjectForm()
+    })
+  # render error page if user is not logged in
+  return render(request, 'autherror.html')
+
+def getProjectUpdateFormSuccess(request):
+  if request.user.is_authenticated():
+    in_id = request.GET.get('id')
+    if request.method == 'POST':
+      form = forms.ProjectForm(request.POST)
+      print(form.is_valid())
+      print(form.errors)
+      if form.is_valid():
+        if models.Project.objects.filter(name__exact=form.cleaned_data['name']).exists():
+          return render(request, 'projectupdate.html', {'error': 'Error: That Project name already exists!'})
+        print(form.cleaned_data)
+        in_project = Project.objects.get(id=in_id)
+        if form.cleaned_data['name'] != 'None':
+          in_project.name = form.cleaned_data['name']
+        if form.cleaned_data['description'] != 'None':
+          in_project.description = form.cleaned_data['description']
+        if form.cleaned_data['languages'] != 'None':
+          in_project.languages = form.cleaned_data['languages']
+        if form.cleaned_data['years'] != None:
+          in_project.years = form.cleaned_data['years']
+        if form.cleaned_data['speciality'] != 'None':
+          in_project.speciality = form.cleaned_data['speciality']
+
+        in_project.save()
+
+        context = {
+          'name': form.cleaned_data['name'],
+        }
+        return render(request, 'projectformsuccess.html', context)
+    return render(request, 'projectupdate.html',{
+      'form': forms.ProjectForm(),
+      'id' : in_id
     })
   # render error page if user is not logged in
   return render(request, 'autherror.html')

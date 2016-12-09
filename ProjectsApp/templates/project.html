@@ -41,6 +41,10 @@
                     </form>
                 {% endif %}
             {% endif %}
+
+            {% if currentuser.id == project.engID.engID.id %}
+                <a class="btn btn-default" href="/project/formupdatesuccess?id={{ project.id }}">Edit Project</a>
+            {% endif %}
         {% if project.taken == True %}
             <p>Assigned to: <i><b>{{ project.taken_by }}</b></i></p>
             {% else %}
