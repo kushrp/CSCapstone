@@ -172,6 +172,7 @@ def takeProject(request):
 
         if in_group.assigned == False and in_project.taken == False:
           in_group.assigned = True
+          in_group.project_assgn = in_project
           in_project.taken_by = in_group
           in_project.taken = True
 
@@ -191,6 +192,7 @@ def ditchProject(request):
       in_group = in_project.taken_by
       if in_group.assigned == True and in_project.taken == True:
         in_group.assigned = False
+        in_group.project_assgn = None
         in_project.taken_by = None
         in_project.taken = False
 

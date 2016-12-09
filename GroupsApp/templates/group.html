@@ -5,7 +5,7 @@
 	<!-- Content -->
 	<div class="container theme-showcase" role="main">
 		<div class="jumbotron">
-			<h1>{{ group.name }} </h1>{% if group.assigned == True %}<span class="label label-info">Assigned</span>{% endif %}
+			<h1>{{ group.name }} </h1>{% if group.assigned == True %}<span class="label label-info">Assigned Project : {{ group.project_assgn.name }}</span>{% endif %}
 			<p>{{ group.description }}</p>
 
             {% if user.email != group.owner.email%}
