@@ -194,6 +194,15 @@ def updateProgress(request):
       return HttpResponseRedirect('/project?name=' + project.name)
   return render(request, 'autherror.html')
 
+def deleteProj(request):
+  if request.user.is_authenticated():
+    in_proj_id = request.GET.get('id')
+    in_project = Project.objects.get(id=in_proj_id)
+
+    in_project.delete()
+    return HttpResponseRedirect('/home')
+  return render(request, 'autherror.html')
+
 
 def takeProject(request):
   if request.user.is_authenticated():
